@@ -2,6 +2,9 @@
 
 A cyberpunk-inspired terminal interface that delivers wisdom through a neon-lit command-line experience. Created by [drbaph](https://drbaph.dev), featuring multiple resizable terminal windows, smooth animations, and a collection of mysterious commands.
 
+![image](https://github.com/user-attachments/assets/a779c7e8-4364-409f-9df6-74b834ef0875)
+
+
 ## Features
 
 - 🖥️ Multiple resizable terminal windows
@@ -65,5 +68,7 @@ Created with 💚 by [drbaph](https://drbaph.dev)
 - Inspiration: Cyberpunk aesthetics and classic terminal interfaces
 
 ## License
+Apache 2.0 - This project is part of the NeonOracle system by drbaph. Please be sure to use caution. Some commands may alter your reality.
 
-This project is part of the NeonOracle system by drbaph. Use with caution. Some commands may alter your reality.
+![neonoracle](https://github.com/user-attachments/assets/32dd74fa-fcf5-4e10-940e-5388382ea5c5)
+
