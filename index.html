@@ -18,7 +18,7 @@
     <!-- Open Graph Meta Tags (for social sharing) -->
     <meta property="og:title" content="Neon Oracle :: Linux Terminal">
     <meta property="og:description" content="Neon Oracle is a stylish, terminal-themed web application that generates and displays inspirational quotes in a nostalgic command-line interface.">
-    <meta property="og:image" content="ttps://i.ibb.co/9kLdSDzp/neonoracle.jpg">
+    <meta property="og:image" content="https://i.ibb.co/9kLdSDzp/neonoracle.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
@@ -28,7 +28,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Neon Oracle :: Linux Terminal">
     <meta name="twitter:description" content="Neon Oracle is a stylish, terminal-themed web application that generates and displays inspirational quotes in a nostalgic command-line interface.">
-    <meta name="twitter:image" content="ttps://i.ibb.co/9kLdSDzp/neonoracle.jpg">
+    <meta name="twitter:image" content="https://i.ibb.co/9kLdSDzp/neonoracle.jpg">
 
     <!-- Terminal styles -->
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=VT323&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
             --terminal-window-z: 100;
             --control-red: #ff5f56;
             --control-yellow: #ffbd2e;
-            --control-green: #27c93f;
+            --control-green: #34c759; /* Updated to match macOS green */
         }
         
         * {
@@ -101,7 +101,7 @@
             min-height: 300px;
             max-height: 90vh;
             background-color: rgba(0, 0, 0, 0.9);
-            border-radius: 6px;
+            border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3), 
                         0 0 60px rgba(0, 0, 0, 0.5);
             overflow: hidden;
@@ -158,6 +158,12 @@
             opacity: 0.95;
             box-shadow: 0 20px 50px rgba(0, 255, 0, 0.4),
                        0 0 100px rgba(0, 0, 0, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .terminal-container {
+                border-radius: 6px;
+            }
         }
 
         /* Terminal content */
@@ -290,7 +296,7 @@
         }
         
         .green-dot {
-            background-color: #27c93f;
+            background-color: #34c759;
         }
         
         .control-dot i {
@@ -318,7 +324,7 @@
         }
         
         .green-dot:hover {
-            box-shadow: 0 0 5px #27c93f;
+            box-shadow: 0 0 5px #34c759;
         }
         
         /* Command line */
@@ -616,6 +622,19 @@
         .resize-handle:active {
             background-color: rgba(0, 255, 0, 0.25) !important;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.5) !important;
+        }
+
+        /* Resize handle glow animation */
+        @keyframes handlePulse {
+            0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+        }
+
+        .resize-handle.active {
+            animation: handlePulse 1s infinite;
+            background: rgba(255, 255, 255, 0.15);
+            transition: background 0.3s ease;
         }
 
         /* Input box */
@@ -1198,44 +1217,6 @@
                 }
             };
             
-            const setupTerminalInput = (terminalInput, terminalId) => {
-                terminalInput.addEventListener('keydown', async (e) => {
-                    if (e.key === 'Enter') {
-                        const command = terminalInput.value.trim();
-                        terminalInput.value = '';
-                        addCommandLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), command);
-                        
-                        if (command.toLowerCase() === 'sudo close-all') {
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Initiating terminal shutdown sequence...');
-                            await new Promise(resolve => setTimeout(resolve, 500));
-                            closeAllTerminals();
-                        } else if (command.toLowerCase() === '!help') {
-                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
-                            addResponseLine(content, '[System] Standard commands:');
-                            addResponseLine(content, '  clear          - Reset terminal display');
-                            addResponseLine(content, '  reconnect      - Attempt connection restore');
-                            addResponseLine(content, '  sudo close-all - Emergency protocol');
-                            addResponseLine(content, '[System] Hidden protocols detected...');
-                            addResponseLine(content, '  sudo goto-repo  - [ACCESS RESTRICTED]');
-                            addResponseLine(content, '  sudo enable-h4x - [CLASSIFIED]');
-                            addResponseLine(content, '  sudo l0ve-me    - [REDACTED] <3');
-                            addResponseLine(content, '  sudo emo-me0w   - [EMOTIONAL DAMAGE] 😭💔');
-                            addResponseLine(content, '[System] Warning: Use of unauthorized commands may have unexpected consequences.');
-                        } else if (command.toLowerCase() === 'clear') {
-                            terminalInput.parentNode.parentNode.querySelector('.terminal-content').innerHTML = '';
-                        } else if (command.toLowerCase() === 'reconnect') {
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Operating in local-only mode. External connections disabled.');
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Using stored quotes from local repository.');
-                        } else if (command.trim() !== '') {
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), `Command not found: ${command}`);
-                        }
-                    }
-                });
-                terminalInput.addEventListener('touchstart', () => {
-                    terminalInput.focus();
-                });
-            };
-            
             const setupWindowDrag = (terminalContainer) => {
                 const header = terminalContainer.querySelector('.terminal-header');
                 let isDragging = false;
@@ -1243,10 +1224,10 @@
                 let initialX, initialY;
                 
                 const onMouseDown = (e) => {
-                    if (e.button !== 0) return;
+                    if (e.type === 'mousedown' && e.button !== 0) return;
                     isDragging = true;
-                    startX = e.clientX;
-                    startY = e.clientY;
+                    startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+                    startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
                     initialX = terminalContainer.offsetLeft;
                     initialY = terminalContainer.offsetTop;
                     terminalContainer.classList.add('dragging');
@@ -1257,9 +1238,11 @@
                 const onMouseMove = (e) => {
                     if (!isDragging) return;
                     e.preventDefault();
+                    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+                    const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
                     requestAnimationFrame(() => {
-                        const newX = initialX + (e.clientX - startX);
-                        const newY = initialY + (e.clientY - startY);
+                        const newX = initialX + (clientX - startX);
+                        const newY = initialY + (clientY - startY);
                         const maxX = window.innerWidth - terminalContainer.offsetWidth;
                         const maxY = window.innerHeight - terminalContainer.offsetHeight;
                         terminalContainer.style.left = `${Math.max(0, Math.min(maxX, newX))}px`;
@@ -1275,8 +1258,11 @@
                 };
                 
                 header.addEventListener('mousedown', onMouseDown);
+                header.addEventListener('touchstart', onMouseDown);
                 document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('touchmove', onMouseMove, { passive: false });
                 document.addEventListener('mouseup', onMouseUp);
+                document.addEventListener('touchend', onMouseUp);
             };
             
             const setupWindowResize = (terminalContainer) => {
@@ -1295,6 +1281,7 @@
                     if (state && state.isMaximized) return;
                     isResizing = true;
                     currentHandle = e.target;
+                    currentHandle.classList.add('active');
                     startX = e.clientX || e.touches[0].clientX;
                     startY = e.clientY || e.touches[0].clientY;
                     startWidth = terminalContainer.offsetWidth;
@@ -1357,17 +1344,21 @@
                 const onEnd = () => {
                     if (!isResizing) return;
                     isResizing = false;
+                    if (currentHandle) {
+                        currentHandle.classList.remove('active');
+                    }
+                    document.body.style.cursor = '';
                     terminalContainer.style.willChange = 'auto';
-                    document.body.style.cursor = 'default';
                 };
                 
                 handles.forEach(handle => {
                     handle.addEventListener('mousedown', onStart);
-                    handle.addEventListener('touchstart', onStart, { passive: false });
+                    handle.addEventListener('touchstart', onStart);
                 });
+
                 document.addEventListener('mousemove', onMove);
-                document.addEventListener('mouseup', onEnd);
                 document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('mouseup', onEnd);
                 document.addEventListener('touchend', onEnd);
                 document.addEventListener('touchcancel', onEnd);
             };
@@ -1456,10 +1447,10 @@
                 const dots = document.querySelectorAll('.green-dot');
                 dots.forEach(dot => {
                     if (connected) {
-                        dot.style.backgroundColor = '#27c93f';
-                        dot.style.boxShadow = '0 0 5px #27c93f';
+                        dot.style.backgroundColor = 'var(--control-green)';
+                        dot.style.boxShadow = '0 0 5px var(--control-green)';
                     } else {
-                        dot.style.backgroundColor = '#ff3030';
+                        dot.style.backgroundColor = 'var(--control-green)';
                         dot.style.boxShadow = 'none';
                     }
                 });
@@ -1494,7 +1485,12 @@
                 }
             }
             
-            const showQuote = (terminalContent, quote, terminalId, isApiQuote = false) => {
+            const showQuote = async (terminalContent, quote, terminalId, isApiQuote = false) => {
+                const responseTime = Math.floor(Math.random() * (38 - 18 + 1) + 18);
+                const quotePrefix = isApiQuote ? 
+                    `[API Quote - returned response 200 in ${responseTime}ms]` : 
+                    '[Local Quote]';
+                const formattedQuote = `${quotePrefix}] ${quote.text}`;
                 const quoteSection = document.createElement('div');
                 quoteSection.className = 'quote-section';
                 if (isApiQuote) {
@@ -1624,6 +1620,79 @@
                     await new Promise(resolve => setTimeout(resolve, messageDelay));
                 }
             }
+            
+            const setupTerminalInput = (terminalInput, terminalId) => {
+                terminalInput.addEventListener('keydown', async (e) => {
+                    if (e.key === 'Enter') {
+                        const command = terminalInput.value.trim();
+                        terminalInput.value = '';
+                        addCommandLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), command);
+                        
+                        if (command.toLowerCase() === 'sudo close-all') {
+                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Initiating terminal shutdown sequence...');
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                            closeAllTerminals();
+                        } else if (command.toLowerCase() === '!help') {
+                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
+                            addResponseLine(content, '[System] Standard commands:');
+                            addResponseLine(content, '  clear          - Reset terminal display');
+                            addResponseLine(content, '  reconnect      - Attempt connection restore');
+                            addResponseLine(content, '  sudo close-all - Emergency protocol');
+                            addResponseLine(content, '[System] Hidden protocols detected...');
+                            addResponseLine(content, '  sudo goto-repo  - [ACCESS RESTRICTED]');
+                            addResponseLine(content, '  sudo enable-h4x - [CLASSIFIED]');
+                            addResponseLine(content, '  sudo l0ve-me    - [REDACTED] <3');
+                            addResponseLine(content, '  sudo emo-me0w   - [EMOTIONAL DAMAGE] 😭💔');
+                            addResponseLine(content, '  sudo go-home    - [RETURN TO 127.0.0.1]');
+                            addResponseLine(content, '[System] Warning: Use of unauthorized commands may have unexpected consequences.');
+                        } else if (command.toLowerCase() === 'sudo goto-repo') {
+                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
+                            addResponseLine(content, '<div class="loading-animation">Establishing connection to GitHub<span>.</span><span>.</span><span>.</span></div>');
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                            addResponseLine(content, '[System] Repository found: NeonOracle');
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                            addResponseLine(content, '[System] Initiating redirect sequence...');
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            window.location.href = 'https://github.com/Saganaki22/NeonOracle';
+                        } else if (command.toLowerCase() === 'sudo enable-h4x') {
+                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
+                            addResponseLine(content, '<div class="loading-animation">Initiating h4x sequence<span>.</span><span>.</span><span>.</span></div>');
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                            await displayHackingSequence(content);
+                            addResponseLine(content, '[System] Reality breach complete. Redirecting to source...');
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                            window.location.href = 'https://www.youtube.com/watch?v=qbWqXKN3m3c';
+                        } else if (command.toLowerCase() === 'sudo l0ve-me') {
+                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
+                            addResponseLine(content, '<div style="color: #ff69b4">♥ ♥ ♥ Hope you love me longtime mr. wonton! ♥ ♥ ♥</div>');
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                            window.location.href = 'https://www.youtube.com/watch?v=tb4ozEOZh8U';
+                        } else if (command.toLowerCase() === 'sudo emo-me0w') {
+                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
+                            addResponseLine(content, '[System] 😭💔 *sad meow* 😭💔');
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                            window.location.href = 'https://www.youtube.com/watch?v=AtPrjYp75uA';
+                        } else if (command.toLowerCase() === 'sudo go-home') {
+                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
+                            addResponseLine(content, '[System] Redirecting to localhost (127.0.0.1)...');
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                            addResponseLine(content, '[System] There\'s no place like ~/home');
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            window.location.href = 'https://drbaph.dev';
+                        } else if (command.toLowerCase() === 'clear') {
+                            terminalInput.parentNode.parentNode.querySelector('.terminal-content').innerHTML = '';
+                        } else if (command.toLowerCase() === 'reconnect') {
+                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Operating in local-only mode. External connections disabled.');
+                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Using stored quotes from local repository.');
+                        } else if (command.trim() !== '') {
+                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), `Command not found: ${command}`);
+                        }
+                    }
+                });
+                terminalInput.addEventListener('touchstart', () => {
+                    terminalInput.focus();
+                });
+            };
             
             const initTerminal = async (terminalContent, terminalId) => {
                 if (!localStorage.getItem(`terminal_${terminalId}_quoteCount`)) {
