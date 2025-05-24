@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Oracle :: Linux Terminal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Neon Oracle :: Modern Linux Terminal</title>
 
     <!-- Meta Description -->
-    <meta name="description" content="Neon Oracle is a stylish, terminal-themed web application that generates and displays inspirational quotes in a nostalgic command-line interface.">
+    <meta name="description" content="Modern Neon Oracle - A stylish, terminal-themed web application with games, quotes, and retro computing vibes.">
 
     <!-- Favicon Links -->
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
@@ -30,458 +30,158 @@
     <meta name="twitter:description" content="Neon Oracle is a stylish, terminal-themed web application that generates and displays inspirational quotes in a nostalgic command-line interface.">
     <meta name="twitter:image" content="https://i.ibb.co/9kLdSDzp/neonoracle.jpg">
 
-    <!-- Terminal styles -->
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTmVvbiBPcmFjbGUiLCJzaG9ydF9uYW1lIjoiTmVvbk9yYWNsZSIsImRlc2NyaXB0aW9uIjoiTW9kZXJuIHRlcm1pbmFsIGludGVyZmFjZSIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsInRoZW1lX2NvbG9yIjoiIzAwMDAwMCIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIn0=">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <style>
+        /* Modern CSS Custom Properties */
         :root {
-            --terminal-green: #00ff00;
+            --terminal-primary: #00ff41;
+            --terminal-secondary: #008f11;
+            --terminal-accent: #ff0080;
+            --terminal-warning: #ffaa00;
+            --terminal-error: #ff3030;
             --terminal-white: #ffffff;
-            --terminal-bg: #000000;
             --terminal-gray: #aaaaaa;
-            --terminal-header: #272727;
-            --terminal-window-z: 100;
+            --terminal-dark-gray: #666666;
+            --terminal-bg: #000000;
+            --terminal-header: #1a1a1a;
+            --terminal-content-bg: rgba(0, 0, 0, 0.95);
+            --terminal-border: rgba(0, 255, 65, 0.3);
+            --terminal-shadow: rgba(0, 255, 65, 0.2);
+            --terminal-glow: rgba(0, 255, 65, 0.4);
+            
+            /* Control colors */
             --control-red: #ff5f56;
             --control-yellow: #ffbd2e;
-            --control-green: #34c759; /* Updated to match macOS green */
+            --control-green: #27ca42;
+            
+            /* Responsive spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            /* Typography */
+            --font-family-mono: 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-xxl: 1.5rem;
+            
+            /* Animations */
+            --animation-speed: 0.3s;
+            --animation-curve: cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Z-indexes */
+            --z-background: -1;
+            --z-scanlines: 1;
+            --z-terminal: 100;
+            --z-active-terminal: 200;
+            --z-modal: 1000;
+            --z-game: 1001;
         }
-        
-        * {
+
+        /* CSS Reset & Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            -webkit-touch-callout: none;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-mono);
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--terminal-primary);
+            background: var(--terminal-bg);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: manipulation;
+        }
+
+        /* Utility Classes */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .no-select {
             -webkit-user-select: none;
-            -khtml-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
-        
-        html, body {
-            overflow: hidden;
-            height: 100%;
-            width: 100%;
-        }
-        
-        body {
-            font-family: 'Inconsolata', monospace;
-            background-color: #121212;
-            color: var(--terminal-green);
-            line-height: 1.4;
-            position: relative;
-        }
-        
-        /* Background Project Name */
+
+        /* Background Effects */
         .bg-project-name {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 5vw;
-            font-weight: bold;
-            color: rgba(0, 255, 0, 0.05);
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 700;
+            color: rgba(0, 255, 65, 0.03);
             white-space: nowrap;
-            z-index: -1;
-            font-family: 'Inconsolata', monospace;
+            z-index: var(--z-background);
+            font-family: var(--font-family-mono);
             text-transform: uppercase;
-            letter-spacing: 0.5vw;
-            transition: color 0.3s ease;
+            letter-spacing: 0.1em;
+            transition: color var(--animation-speed) var(--animation-curve);
             cursor: pointer;
+            pointer-events: auto;
         }
-        
+
+        .bg-project-name:hover {
+            color: rgba(0, 255, 65, 0.08);
+        }
+
         .bg-project-name.bright {
-            color: rgba(0, 255, 0, 0.2);
+            color: rgba(0, 255, 65, 0.15);
         }
-        
-        /* Terminal container */
-        .terminal-container {
-            width: 50vw;
-            min-width: 600px;
-            min-height: 300px;
-            max-height: 90vh;
-            background-color: rgba(0, 0, 0, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3), 
-                        0 0 60px rgba(0, 0, 0, 0.5);
+
+        /* Matrix Rain Background Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            z-index: var(--terminal-window-z);
-            opacity: 1;
-            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            left: 30px;
-            top: 30px;
-            transform: none;
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
-            will-change: transform, left, top;
+            z-index: var(--z-background);
+            opacity: 0.1;
+            pointer-events: none;
         }
 
-        .terminal-container.maximized {
-            width: 100vw !important;
-            height: 100vh !important;
-            min-width: 100vw !important;
-            min-height: 100vh !important;
-            max-height: 100vh !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            transform: none !important;
-            border-radius: 0 !important;
-            margin: 0 !important;
-            resize: none;
-            z-index: 1000;
+        .matrix-rain canvas {
+            display: block;
         }
 
-        .terminal-container:hover {
-            box-shadow: 0 15px 40px rgba(0, 255, 0, 0.4), 
-                        0 0 80px rgba(0, 0, 0, 0.6);
-        }
-        
-        .terminal-container.active {
-            z-index: 200;
-            box-shadow: 0 15px 60px rgba(0, 255, 0, 0.5), 
-                        0 0 100px rgba(0, 0, 0, 0.7);
-        }
-        
-        .terminal-container.closing {
-            transform: scale(0.9);
-            opacity: 0;
-        }
-        
-        .terminal-container.dragging {
-            transition: none !important;
-            cursor: grabbing !important;
-            transform: scale(1.01);
-            opacity: 0.95;
-            box-shadow: 0 20px 50px rgba(0, 255, 0, 0.4),
-                       0 0 100px rgba(0, 0, 0, 0.6);
-        }
-
-        @media (max-width: 768px) {
-            .terminal-container {
-                border-radius: 6px;
-            }
-        }
-
-        /* Terminal content */
-        .terminal-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            font-family: 'VT323', monospace;
-            color: var(--terminal-green);
-            line-height: 1.4;
-            position: relative;
-            background: var(--terminal-bg);
-            max-height: calc(80vh - 60px); /* Adjust for header and input wrapper */
-            scrollbar-width: thin;
-            scrollbar-color: var(--terminal-green) rgba(0, 0, 0, 0.6);
-        }
-
-        .terminal-content::-webkit-scrollbar {
-            width: 10px;
-            background: var(--terminal-bg);
-        }
-
-        .terminal-content::-webkit-scrollbar-track {
-            background: var(--terminal-bg);
-            border: 1px solid rgba(0, 255, 0, 0.1);
-            box-shadow: inset 0 0 6px rgba(0, 255, 0, 0.1);
-        }
-
-        .terminal-content::-webkit-scrollbar-thumb {
-            background: var(--terminal-green);
-            border: 2px solid var(--terminal-bg);
-            box-shadow: 0 0 8px var(--terminal-green);
-            border-radius: 4px;
-        }
-
-        .terminal-content::-webkit-scrollbar-thumb:hover {
-            background: #00ff00;
-            box-shadow: 0 0 12px #00ff00;
-        }
-
-        .terminal-content::-webkit-scrollbar-corner {
-            background: var(--terminal-bg);
-        }
-
-        .terminal-content p {
-            margin-bottom: 8px;
-            text-shadow: 0 0 5px var(--terminal-green);
-        }
-
-        .terminal-content .command-line {
-            color: var(--terminal-white);
-            text-shadow: 0 0 5px var(--terminal-white);
-        }
-
-        .terminal-content .response-line {
-            color: var(--terminal-green);
-        }
-        
-        /* Override on mobile to maintain full height */
-        @media (max-width: 600px) {
-            .terminal-container {
-                width: 100vw !important;
-                height: 100vh !important;
-                max-width: 100vw !important;
-                max-height: 100vh !important; /* Full height on mobile */
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                transform: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border-radius: 0 !important;
-                transition: none !important;
-            }
-
-            .terminal-content {
-                height: calc(100vh - 50px) !important; /* Full available height minus header */
-                max-height: none !important; /* No max-height restriction on mobile */
-            }
-        }
-        
-        /* Terminal header */
-        .terminal-header {
-            background-color: var(--terminal-header);
-            padding: 8px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #444;
-            cursor: grab;
-            user-select: none;
-            touch-action: none;
-        }
-        
-        .terminal-header:active {
-            cursor: grabbing;
-        }
-
-        .terminal-title {
-            color: var(--terminal-white);
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .terminal-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .control-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .red-dot {
-            background-color: #ff5f56;
-        }
-        
-        .yellow-dot {
-            background-color: #ffbd2e;
-        }
-        
-        .green-dot {
-            background-color: #34c759;
-        }
-        
-        .control-dot i {
-            color: rgba(0, 0, 0, 0.7);
-            font-size: 8px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        
-        .control-dot:hover i {
-            opacity: 1;
-        }
-        
-        .control-dot:hover {
-            filter: brightness(1.2);
-            box-shadow: 0 0 5px currentColor;
-        }
-        
-        .red-dot:hover {
-            box-shadow: 0 0 5px #ff5f56;
-        }
-        
-        .yellow-dot:hover {
-            box-shadow: 0 0 5px #ffbd2e;
-        }
-        
-        .green-dot:hover {
-            box-shadow: 0 0 5px #34c759;
-        }
-        
-        /* Command line */
-        .command-line {
-            display: flex;
-            margin-bottom: 10px;
-        }
-        
-        .prompt {
-            color: var(--terminal-green);
-            margin-right: 10px;
-            white-space: nowrap;
-        }
-        
-        .command {
-            color: var(--terminal-white);
-            flex-grow: 1;
-        }
-        
-        /* Response line */
-        .response {
-            color: var(--terminal-green);
-            margin-bottom: 15px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        
-        /* Cursor animation */
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 16px;
-            background-color: var(--terminal-green);
-            animation: blink 1s infinite;
-            vertical-align: middle;
-            margin-left: 1px;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        /* ASCII Art */
-        .ascii-art {
-            color: var(--terminal-green);
-            font-family: monospace;
-            line-height: 1.2;
-            margin: 15px 0;
-            white-space: pre;
-            font-size: 12px;
-        }
-        
-        /* Quote section */
-        .quote-section {
-            border: 1px solid #333;
-            padding: 15px;
-            margin: 15px 0;
-            background-color: rgba(0, 30, 0, 0.3);
-            position: relative;
-        }
-        
-        .quote-text {
-            color: var(--terminal-white);
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .quote-author {
-            color: var(--terminal-gray);
-            text-align: right;
-            font-style: italic;
-        }
-        
-        /* Button styles */
-        .terminal-button {
-            background-color: transparent;
-            color: var(--terminal-green);
-            border: 1px solid var(--terminal-green);
-            padding: 8px 15px;
-            font-family: 'Inconsolata', monospace;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.2s ease;
-        }
-        
-        .terminal-button:hover {
-            background-color: rgba(0, 255, 0, 0.1);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-        }
-        
-        .terminal-button:active {
-            transform: translateY(1px);
-        }
-        
-        /* Share buttons */
-        .share-container {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        /* Typing animation */
-        .typing {
-            overflow: hidden;
-            border-right: 3px solid var(--terminal-green);
-            white-space: nowrap;
-            margin: 0;
-            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
-        
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--terminal-green) }
-        }
-        
-        /* Status line */
-        .status-line {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #555;
-            border-top: 1px solid #333;
-            padding-top: 10px;
-            margin-top: 15px;
-        }
-        
-        .status-item {
-            display: flex;
-            align-items: center;
-        }
-        
-        /* Copy notification */
-        .copy-notification {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background-color: #333;
-            color: var(--terminal-white);
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .copy-notification.show {
-            opacity: 1;
-        }
-        
-        /* Background scanlines */
+        /* Scanlines Effect */
         .scanlines {
             position: fixed;
             top: 0;
@@ -489,357 +189,703 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(
-                to bottom,
-                rgba(255, 255, 255, 0),
-                rgba(255, 255, 255, 0) 50%,
-                rgba(0, 0, 0, 0.2) 50%,
-                rgba(0, 0, 0, 0.2)
+                transparent 50%,
+                rgba(0, 255, 65, 0.03) 50%
             );
             background-size: 100% 4px;
             pointer-events: none;
-            z-index: 999;
-            opacity: 0.1;
+            z-index: var(--z-scanlines);
+            animation: scanlines 0.1s linear infinite;
         }
-        
-        /* Loading animation */
-        .loading-animation span {
-            display: inline-block;
-            animation: pulse 1.5s infinite;
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
         }
-        
-        .loading-animation span:nth-child(2) {
-            animation-delay: 0.2s;
+
+        /* Terminal Container */
+        .terminal-container {
+            position: absolute;
+            min-width: min(90vw, 600px);
+            min-height: min(70vh, 400px);
+            background: var(--terminal-content-bg);
+            border: 1px solid var(--terminal-border);
+            border-radius: 12px;
+            box-shadow: 
+                0 0 0 1px rgba(0, 255, 65, 0.1),
+                0 10px 30px var(--terminal-shadow),
+                0 0 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: var(--z-terminal);
+            transition: all var(--animation-speed) var(--animation-curve);
+            will-change: transform;
+            contain: layout style paint;
+            user-select: none;
         }
-        
-        .loading-animation span:nth-child(3) {
-            animation-delay: 0.4s;
+
+        .terminal-container.active {
+            z-index: var(--z-active-terminal);
+            box-shadow: 
+                0 0 0 1px var(--terminal-primary),
+                0 15px 60px var(--terminal-glow),
+                0 0 100px rgba(0, 0, 0, 0.7);
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+
+        .terminal-container.maximized {
+            width: 100vw !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            transform: none !important;
         }
-        
-        /* Floating action button */
-        .new-terminal-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
+
+        .terminal-container.minimized {
+            transform: scale(0.1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .terminal-container.closing {
+            animation: closeTerminal var(--animation-speed) var(--animation-curve) forwards;
+        }
+
+        .terminal-container.dragging {
+            transition: none !important;
+            cursor: grabbing !important;
+            transform: scale(1.02);
+            box-shadow: 
+                0 0 0 1px var(--terminal-primary),
+                0 20px 60px var(--terminal-glow),
+                0 0 120px rgba(0, 0, 0, 0.8);
+        }
+
+        @keyframes closeTerminal {
+            to {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Terminal Header */
+        .terminal-header {
+            background: var(--terminal-header);
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--terminal-border);
+            cursor: grab;
+            user-select: none;
+            min-height: 48px;
+        }
+
+        .terminal-header:active {
+            cursor: grabbing;
+        }
+
+        .terminal-title {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--terminal-white);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+
+        .terminal-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .control-dot {
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: var(--terminal-green);
-            border: 2px solid var(--terminal-green);
+            cursor: pointer;
+            transition: all var(--animation-speed) var(--animation-curve);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .control-dot::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0;
+            transform: scale(0);
+            transition: all var(--animation-speed) var(--animation-curve);
+        }
+
+        .control-dot:hover::before {
+            opacity: 0.2;
+            transform: scale(1);
+        }
+
+        .control-dot i {
+            font-size: 8px;
+            color: rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transition: opacity var(--animation-speed) var(--animation-curve);
+        }
+
+        .control-dot:hover i {
+            opacity: 1;
+        }
+
+        .red-dot { background: var(--control-red); }
+        .yellow-dot { background: var(--control-yellow); }
+        .green-dot { background: var(--control-green); }
+
+        /* Terminal Content */
+        .terminal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-md);
+            background: var(--terminal-bg);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+            scrollbar-width: thin;
+            scrollbar-color: var(--terminal-primary) transparent;
+            user-select: text;
+        }
+
+        .terminal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .terminal-content::-webkit-scrollbar-thumb {
+            background: var(--terminal-primary);
+            border-radius: 4px;
+            opacity: 0.6;
+        }
+
+        .terminal-content::-webkit-scrollbar-thumb:hover {
+            opacity: 1;
+        }
+
+        /* Terminal Text Elements */
+        .command-line {
+            display: flex;
+            margin-bottom: var(--spacing-sm);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .prompt {
+            color: var(--terminal-primary);
+            margin-right: var(--spacing-sm);
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .command {
+            color: var(--terminal-white);
+            flex: 1;
+        }
+
+        .response {
+            color: var(--terminal-primary);
+            margin-bottom: var(--spacing-md);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .error {
+            color: var(--terminal-error);
+        }
+
+        .warning {
+            color: var(--terminal-warning);
+        }
+
+        .success {
+            color: var(--terminal-primary);
+        }
+
+        .info {
+            color: var(--terminal-accent);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid var(--terminal-primary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: var(--spacing-sm) 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--terminal-primary), var(--terminal-accent));
+            width: 0%;
+            transition: width 0.1s ease-out;
+            border-radius: 3px;
+        }
+
+        /* ASCII Art */
+        .ascii-art {
+            color: var(--terminal-primary);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-xs);
+            line-height: 1.2;
+            margin: var(--spacing-lg) 0;
+            white-space: pre;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-1px, 1px); }
+            40% { transform: translate(-1px, -1px); }
+            60% { transform: translate(1px, 1px); }
+            80% { transform: translate(1px, -1px); }
+        }
+
+        /* Quote Section */
+        .quote-section {
+            border: 1px solid var(--terminal-border);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            background: rgba(0, 255, 65, 0.03);
+            backdrop-filter: blur(5px);
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .quote-text {
+            color: var(--terminal-white);
+            font-size: var(--font-size-lg);
+            font-weight: 500;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.4;
+        }
+
+        .quote-author {
+            color: var(--terminal-gray);
+            text-align: right;
+            font-style: italic;
+            font-size: var(--font-size-sm);
+        }
+
+        /* Buttons */
+        .terminal-button {
+            background: transparent;
+            color: var(--terminal-primary);
+            border: 1px solid var(--terminal-primary);
+            border-radius: 6px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all var(--animation-speed) var(--animation-curve);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+        }
+
+        .terminal-button:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .terminal-button:active {
+            transform: translateY(0);
+        }
+
+        .share-container {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        /* Terminal Input */
+        .terminal-input-wrapper {
+            display: flex;
+            align-items: center;
+            border-top: 1px solid var(--terminal-border);
+            padding: var(--spacing-md);
+            background: rgba(0, 255, 65, 0.02);
+            min-height: 60px;
+        }
+
+        .terminal-input-prompt {
+            color: var(--terminal-primary);
+            margin-right: var(--spacing-sm);
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--terminal-white);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-base);
+            outline: none;
+            caret-color: var(--terminal-primary);
+        }
+
+        .terminal-input::placeholder {
+            color: var(--terminal-dark-gray);
+        }
+
+        /* Floating Action Button */
+        .floating-actions {
+            position: fixed;
+            bottom: var(--spacing-xl);
+            right: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            z-index: 500;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--terminal-content-bg);
+            color: var(--terminal-primary);
+            border: 2px solid var(--terminal-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 500;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-            transition: all 0.3s ease;
+            transition: all var(--animation-speed) var(--animation-curve);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px var(--terminal-shadow);
         }
-        
-        .new-terminal-btn:hover {
+
+        .fab:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            box-shadow: 0 8px 30px var(--terminal-glow);
         }
-        
-        .new-terminal-btn i {
+
+        .fab i {
             font-size: 24px;
         }
-        
-        /* Resize handles */
+
+        /* Game Canvas */
+        .game-canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--terminal-bg);
+            border: 2px solid var(--terminal-primary);
+            border-radius: 8px;
+            z-index: var(--z-game);
+            box-shadow: 0 0 50px var(--terminal-glow);
+            display: block;
+        }
+
+        .game-canvas.active {
+            display: block;
+            animation: fadeInScale 0.3s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Game Overlay */
+        .game-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: var(--z-game);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-overlay.active {
+            display: flex;
+        }
+
+        /* Typing Animation */
+        .typing-animation {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(40, end);
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .cursor {
+            display: inline-block;
+            background: var(--terminal-primary);
+            width: 2px;
+            height: 1em;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-flex;
+            gap: 2px;
+        }
+
+        .loading-dots span {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--terminal-primary);
+            animation: loadingDots 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loadingDots {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Resize handles for desktop */
         .resize-handle {
             position: absolute;
             background: transparent;
             z-index: 1000;
-            transition: background-color 0.2s, box-shadow 0.2s;
+            transition: background-color 0.2s ease;
         }
 
-        /* Edge handles */
+        .resize-handle:hover {
+            background: rgba(0, 255, 65, 0.1);
+        }
+
         .resize-handle-n, .resize-handle-s {
-            height: 12px;
-            left: 12px;
-            right: 12px;
-            background: linear-gradient(
-                to bottom,
-                transparent,
-                rgba(0, 255, 0, 0.05) 50%,
-                transparent
-            );
+            height: 6px;
+            left: 6px;
+            right: 6px;
         }
 
         .resize-handle-e, .resize-handle-w {
-            width: 12px;
-            top: 12px;
-            bottom: 12px;
-            background: linear-gradient(
-                to right,
-                transparent,
-                rgba(0, 255, 0, 0.05) 50%,
-                transparent
-            );
+            width: 6px;
+            top: 6px;
+            bottom: 6px;
         }
 
-        .resize-handle-n { top: -6px; cursor: n-resize; }
-        .resize-handle-s { bottom: -6px; cursor: s-resize; }
-        .resize-handle-e { right: -6px; cursor: e-resize; }
-        .resize-handle-w { left: -6px; cursor: w-resize; }
+        .resize-handle-n { top: -3px; cursor: n-resize; }
+        .resize-handle-s { bottom: -3px; cursor: s-resize; }
+        .resize-handle-e { right: -3px; cursor: e-resize; }
+        .resize-handle-w { left: -3px; cursor: w-resize; }
 
-        /* Corner handles */
         .resize-handle-ne, .resize-handle-nw,
         .resize-handle-se, .resize-handle-sw {
-            width: 24px;
-            height: 24px;
-            background: transparent;
-            z-index: 1001;
-            border-radius: 50%;
+            width: 12px;
+            height: 12px;
         }
 
-        .resize-handle-ne { top: -12px; right: -12px; cursor: ne-resize; }
-        .resize-handle-nw { top: -12px; left: -12px; cursor: nw-resize; }
-        .resize-handle-se { bottom: -12px; right: -12px; cursor: se-resize; }
-        .resize-handle-sw { bottom: -12px; left: -12px; cursor: sw-resize; }
+        .resize-handle-ne { top: -6px; right: -6px; cursor: ne-resize; }
+        .resize-handle-nw { top: -6px; left: -6px; cursor: nw-resize; }
+        .resize-handle-se { bottom: -6px; right: -6px; cursor: se-resize; }
+        .resize-handle-sw { bottom: -6px; left: -6px; cursor: sw-resize; }
 
-        /* Hover effects */
-        @media (hover: hover) {
-            .resize-handle:hover {
-                background-color: rgba(0, 255, 0, 0.15);
-                box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-            }
-
-            .resize-handle-ne:hover,
-            .resize-handle-nw:hover,
-            .resize-handle-se:hover,
-            .resize-handle-sw:hover {
-                background-color: rgba(0, 255, 0, 0.2);
-                box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-            }
-        }
-
-        /* Active state */
-        .resize-handle:active {
-            background-color: rgba(0, 255, 0, 0.25) !important;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5) !important;
-        }
-
-        /* Resize handle glow animation */
-        @keyframes handlePulse {
-            0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
-        }
-
-        .resize-handle.active {
-            animation: handlePulse 1s infinite;
-            background: rgba(255, 255, 255, 0.15);
-            transition: background 0.3s ease;
-        }
-
-        /* Input box */
-        .terminal-input-wrapper {
-            display: flex;
-            border-top: 1px solid #333;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-        
-        .terminal-input-prompt {
-            color: var(--terminal-green);
-            margin-right: 10px;
-            white-space: nowrap;
-        }
-        
-        .terminal-input {
-            background-color: transparent;
-            border: none;
-            color: var(--terminal-white);
-            font-family: 'Inconsolata', monospace;
-            font-size: 14px;
-            flex: 1;
-            padding: 0;
-            outline: none;
-        }
-        
-        .terminal-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-        
-        /* Responsive */
-        @media (max-width: 900px) {
-            .terminal-container {
-                width: 90%;
-                max-width: 90vw;
-            }
-            
-            .bg-project-name {
-                font-size: 8vw;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            body, html {
-                position: fixed;
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-                overscroll-behavior: none;
-                -webkit-overflow-scrolling: touch;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            :root {
+                --font-size-base: 0.9rem;
+                --font-size-sm: 0.8rem;
+                --spacing-md: 0.75rem;
             }
 
             .terminal-container {
                 width: 100vw !important;
                 height: 100vh !important;
-                max-width: 100vw !important;
-                max-height: 100vh !important;
+                min-width: 100vw !important;
+                min-height: 100vh !important;
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
-                transform: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
                 border-radius: 0 !important;
-                transition: none !important;
-                width: 100% !important;
-                height: 100% !important;
-            }
-
-            .terminal-container.maximized {
-                width: 100vw !important;
-                height: 100vh !important;
+                transform: none !important;
             }
 
             .terminal-header {
-                padding: 12px 15px;
-                height: 50px;
-                -webkit-user-select: none;
-                user-select: none;
-                touch-action: none;
-            }
-
-            .terminal-controls {
-                gap: 12px;
+                padding: var(--spacing-md);
+                min-height: 56px;
             }
 
             .control-dot {
                 width: 18px;
                 height: 18px;
-                touch-action: manipulation;
             }
 
-            .terminal-content {
-                height: calc(100vh - 50px) !important;
-                font-size: 16px;
-                padding: 15px;
-                -webkit-overflow-scrolling: touch;
+            .floating-actions {
+                bottom: var(--spacing-lg);
+                right: var(--spacing-lg);
             }
 
-            .terminal-input-wrapper {
-                padding: 10px 0;
+            .fab {
+                width: 48px;
+                height: 48px;
             }
 
-            .terminal-input {
-                font-size: 16px;
-                padding: 8px;
+            .fab i {
+                font-size: 20px;
             }
 
-            /* Hide resize handles on mobile */
+            .bg-project-name {
+                font-size: clamp(1.5rem, 12vw, 4rem);
+            }
+
             .resize-handle {
-                display: none !important;
-            }
-
-            /* Prevent elastic scroll on iOS */
-            .terminal-content {
-                overscroll-behavior: contain;
-                position: relative;
-                z-index: 1;
-            }
-
-            /* Ensure proper touch handling */
-            .terminal-title,
-            .terminal-controls,
-            .control-dot {
-                touch-action: manipulation;
-                -webkit-tap-highlight-color: transparent;
-            }
-
-            /* Fix viewport height issues on mobile */
-            @supports (-webkit-touch-callout: none) {
-                .terminal-container {
-                    height: -webkit-fill-available !important;
-                }
-                .terminal-content {
-                    height: calc(100vh - 50px - env(safe-area-inset-bottom)) !important;
-                }
+                display: none;
             }
         }
 
-        /* Handle orientation change */
-        @media screen and (orientation: landscape) and (max-width: 768px) {
-            .terminal-header {
-                height: 40px;
-                padding: 8px 15px;
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --terminal-primary: #00ff41;
+                --terminal-bg: #000000;
             }
+        }
 
-            .terminal-content {
-                height: calc(100vh - 40px) !important;
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
+        }
 
-            .control-dot {
-                width: 16px;
-                height: 16px;
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            :root {
+                --terminal-primary: #ffffff;
+                --terminal-border: #ffffff;
             }
+        }
+
+        /* Performance optimizations */
+        .terminal-container {
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .terminal-content {
+            contain: layout style paint;
+            content-visibility: auto;
         }
     </style>
 </head>
 <body>
-    <!-- Scanlines effect -->
+    <!-- Matrix Rain Background -->
+    <div class="matrix-rain">
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+
+    <!-- Scanlines Effect -->
     <div class="scanlines"></div>
     
-    <!-- Background project name -->
-    <div class="bg-project-name" id="bgProjectName">Saganaki22/NeonOracle</div>
+    <!-- Background Project Name -->
+    <div class="bg-project-name no-select" id="bgProjectName">NEON ORACLE v3.0</div>
     
-    <!-- New terminal button -->
-    <div class="new-terminal-btn" id="newTerminalBtn">
-        <i class="ph ph-terminal"></i>
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <button class="fab" id="newTerminalBtn" title="New Terminal" aria-label="Create new terminal">
+            <i class="ph ph-terminal"></i>
+        </button>
+        <button class="fab" id="gameMenuBtn" title="Games" aria-label="Open games menu">
+            <i class="ph ph-game-controller"></i>
+        </button>
+    </div>
+
+    <!-- Game Overlay -->
+    <div class="game-overlay" id="gameOverlay">
+        <canvas class="game-canvas" id="gameCanvas" width="400" height="400"></canvas>
     </div>
     
-    <!-- Terminal containers will be dynamically added here -->
-    
-    <!-- Template for terminal (hidden, will be cloned) -->
+    <!-- Terminal Template -->
     <template id="terminalTemplate">
         <div class="terminal-container">
-            <!-- Terminal header -->
             <div class="terminal-header">
                 <div class="terminal-title">
-                    user@neon-oracle: ~/wisdom
+                    <i class="ph ph-terminal"></i>
+                    <span class="terminal-path">user@neon-oracle: ~/</span>
                 </div>
                 <div class="terminal-controls">
-                    <div class="control-dot red-dot" title="Close">
+                    <div class="control-dot red-dot" title="Close" aria-label="Close terminal">
                         <i class="ph ph-x"></i>
                     </div>
-                    <div class="control-dot yellow-dot" title="Minimize">
+                    <div class="control-dot yellow-dot" title="Minimize" aria-label="Minimize terminal">
                         <i class="ph ph-minus"></i>
                     </div>
-                    <div class="control-dot green-dot" title="Maximize">
+                    <div class="control-dot green-dot" title="Maximize" aria-label="Maximize terminal">
                         <i class="ph ph-square"></i>
                     </div>
                 </div>
             </div>
             
-            <!-- Terminal content -->
-            <div class="terminal-content">
-                <!-- Content will be dynamically generated -->
-            </div>
+            <div class="terminal-content"></div>
             
-            <!-- Input box -->
             <div class="terminal-input-wrapper">
                 <div class="terminal-input-prompt">user@neon-oracle:~$</div>
-                <input type="text" class="terminal-input" placeholder="sudo close-all">
+                <input type="text" class="terminal-input" placeholder="Type 'help' for commands" autocomplete="off" spellcheck="false">
             </div>
             
-            <!-- Resize handles -->
+            <!-- Resize handles (desktop only) -->
             <div class="resize-handle resize-handle-n"></div>
             <div class="resize-handle resize-handle-e"></div>
             <div class="resize-handle resize-handle-s"></div>
@@ -852,590 +898,141 @@
     </template>
     
     <script>
-        // Add Easter egg message for devtools
-        console.log("%cHey there you little scoundrell, I see you opened the terminal 👀 - I hope you know your way around here, good luck!", "color: #00ff00; font-size: 16px; font-weight: bold;");
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const newTerminalBtn = document.getElementById('newTerminalBtn');
-            const terminalTemplate = document.getElementById('terminalTemplate');
-            const bgProjectName = document.getElementById('bgProjectName');
-            let terminalCounter = 0;
-            let activeTerminal = null;
-            let zIndexCounter = 100;
-            let allTerminals = [];
-            
-            // Prevent right-click context menu
-            document.addEventListener('contextmenu', (e) => {
-                e.preventDefault();
-                return false;
-            });
-            
-            // Handle background project name hover and click
-            bgProjectName.addEventListener('mousemove', () => {
-                const mouseX = event.clientX;
-                const mouseY = event.clientY;
-                const isTerminalOnTop = allTerminals.some(terminal => {
-                    if (terminal.style.display === 'none') return false;
-                    const rect = terminal.getBoundingClientRect();
-                    return (
-                        mouseX >= rect.left && 
-                        mouseX <= rect.right && 
-                        mouseY >= rect.top && 
-                        mouseY <= rect.bottom &&
-                        parseInt(terminal.style.zIndex || 0) > 0
-                    );
-                });
+        // Modern JavaScript with ES6+ features
+        class NeonOracle {
+            constructor() {
+                this.terminals = new Map();
+                this.activeTerminal = null;
+                this.zIndexCounter = 100;
+                this.gameInstance = null;
+                this.quotes = null;
+                this.matrixRain = null;
+                this.isDragging = false;
+                this.isResizing = false;
                 
-                if (!isTerminalOnTop) {
-                    bgProjectName.classList.add('bright');
-                } else {
-                    bgProjectName.classList.remove('bright');
-                }
-            });
-            
-            bgProjectName.addEventListener('mouseleave', () => {
-                bgProjectName.classList.remove('bright');
-            });
-            
-            bgProjectName.addEventListener('click', () => {
-                const mouseX = event.clientX;
-                const mouseY = event.clientY;
-                const isTerminalOnTop = allTerminals.some(terminal => {
-                    if (terminal.style.display === 'none') return false;
-                    const rect = terminal.getBoundingClientRect();
-                    return (
-                        mouseX >= rect.left && 
-                        mouseX <= rect.right && 
-                        mouseY >= rect.top && 
-                        mouseY <= rect.bottom &&
-                        parseInt(terminal.style.zIndex || 0) > 0
-                    );
-                });
-                
-                if (!isTerminalOnTop) {
-                    window.open('https://github.com/Saganaki22/NeonOracle/', '_blank');
-                }
-            });
-            
-            // Window management state
-            const windowStates = {};
-            
-            // Create a new terminal
-            const createTerminal = () => {
-                const isMobile = window.innerWidth <= 768;
-                const terminalId = `terminal-${Date.now()}`;
-                
-                const terminalContainer = document.createElement('div');
-                terminalContainer.className = 'terminal-container';
-                terminalContainer.id = terminalId;
-                
-                if (!isMobile) {
-                    const offset = allTerminals.length * 30;
-                    terminalContainer.style.left = `${offset + 30}px`;
-                    terminalContainer.style.top = `${offset + 30}px`;
-                    terminalContainer.style.height = '85vh';
-                    terminalContainer.style.width = '50vw';
-                } else {
-                    terminalContainer.classList.add('maximized');
-                    terminalContainer.style.left = '0';
-                    terminalContainer.style.top = '0';
-                    terminalContainer.style.width = '100vw';
-                    terminalContainer.style.height = '100vh';
-                }
+                this.init();
+            }
 
-                const terminalHeader = document.createElement('div');
-                terminalHeader.className = 'terminal-header';
+            async init() {
+                console.log('%c🚀 NEON ORACLE v3.0 INITIALIZED', 'color: #00ff41; font-size: 16px; font-weight: bold;');
                 
-                const terminalTitle = document.createElement('div');
-                terminalTitle.className = 'terminal-title';
-                terminalTitle.innerHTML = `
-                    <i class="ph ph-terminal"></i>
-                    <span style="margin-left: 8px;">user@neon-oracle: ~/${terminalId}</span>
-                `;
+                // Initialize matrix rain effect
+                this.initMatrixRain();
                 
-                const terminalControls = document.createElement('div');
-                terminalControls.className = 'terminal-controls';
-                terminalControls.innerHTML = `
-                    <div class="control-dot red-dot" title="Close"><i class="ph ph-x"></i></div>
-                    <div class="control-dot yellow-dot" title="Minimize"><i class="ph ph-minus"></i></div>
-                    <div class="control-dot green-dot" title="Maximize"><i class="ph ph-square"></i></div>
-                `;
+                // Load quotes from GitHub
+                await this.loadQuotes();
                 
-                terminalHeader.appendChild(terminalTitle);
-                terminalHeader.appendChild(terminalControls);
+                // Setup event listeners
+                this.setupEventListeners();
                 
-                const terminalContent = document.createElement('div');
-                terminalContent.className = 'terminal-content';
+                // Create initial terminal
+                this.createTerminal();
                 
-                const inputWrapper = document.createElement('div');
-                inputWrapper.className = 'terminal-input-wrapper';
-                inputWrapper.innerHTML = `
-                    <div class="terminal-input-prompt">user@neon-oracle:~$</div>
-                    <input type="text" class="terminal-input" placeholder="sudo close-all">
-                `;
-                
-                if (!isMobile) {
-                    const resizeHandles = [
-                        'n', 's', 'e', 'w',
-                        'ne', 'nw', 'se', 'sw'
-                    ];
-                    resizeHandles.forEach(direction => {
-                        const handle = document.createElement('div');
-                        handle.className = `resize-handle resize-handle-${direction}`;
-                        terminalContainer.appendChild(handle);
-                    });
-                }
-                
-                terminalContainer.appendChild(terminalHeader);
-                terminalContainer.appendChild(terminalContent);
-                terminalContainer.appendChild(inputWrapper);
-                document.body.appendChild(terminalContainer);
-                
-                const terminalInput = inputWrapper.querySelector('.terminal-input');
-                const placeholders = [
-                    'sudo close-all',
-                    '!help for more commands',
-                    'sudo goto-repo',
-                    'clear',
-                    'reconnect'
-                ];
-                
-                function cyclePlaceholder(input) {
-                    let index = 0;
-                    setInterval(() => {
-                        input.placeholder = placeholders[index];
-                        index = (index + 1) % placeholders.length;
-                    }, 4000);
-                }
-                
-                cyclePlaceholder(terminalInput);
-                
-                windowStates[terminalId] = {
-                    isMaximized: isMobile,
-                    lastPosition: null,
-                    lastSize: null,
-                    beforeMaximize: { width: '50vw', height: '85vh', top: '30px', left: '30px' }
-                };
-                
-                setupWindowControls(terminalContainer, terminalId);
-                if (!isMobile) {
-                    setupWindowDrag(terminalContainer);
-                    setupWindowResize(terminalContainer);
-                }
-                setupTerminalInput(terminalInput, terminalId);
-                
-                allTerminals.push(terminalContainer);
-                setActiveTerminal(terminalContainer);
-                initTerminal(terminalContent, terminalId);
-                
-                return terminalContainer;
-            };
-            
-            window.addEventListener('resize', () => {
-                const isMobile = window.innerWidth <= 768;
-                allTerminals.forEach((terminal, index) => {
-                    if (isMobile) {
-                        terminal.style.left = '50%';
-                        terminal.style.top = '50%';
-                        terminal.style.transform = 'translate(-50%, -50%)';
-                    } else {
-                        const offset = (index + 1) * 30;
-                        terminal.style.left = `${30 + offset}px`;
-                        terminal.style.top = `${30 + offset}px`;
-                        terminal.style.transform = 'none';
-                    }
-                });
-            });
-            
-            const setupScrollBehavior = (terminalContent) => {
-                const scrollToBottom = () => {
-                    terminalContent.scrollTop = terminalContent.scrollHeight;
-                };
-                
-                const observer = new MutationObserver((mutations) => {
-                    scrollToBottom();
-                });
-                
-                observer.observe(terminalContent, {
-                    childList: true, 
-                    subtree: true,
-                    characterData: true,
-                    attributes: true
-                });
-                
-                let touchStartY = 0;
-                let touchScrollTop = 0;
-                let isUserScrolling = false;
-                let userScrollTimeout;
-                
-                terminalContent.addEventListener('touchstart', (e) => {
-                    touchStartY = e.touches[0].clientY;
-                    touchScrollTop = terminalContent.scrollTop;
-                    isUserScrolling = true;
-                    clearTimeout(userScrollTimeout);
-                }, { passive: true });
-                
-                terminalContent.addEventListener('touchmove', (e) => {
-                    if (!isUserScrolling) return;
-                    e.preventDefault();
-                    requestAnimationFrame(() => {
-                        const touchY = e.touches[0].clientY;
-                        const diff = touchStartY - touchY;
-                        terminalContent.scrollTop = touchScrollTop + diff;
-                    });
-                }, { passive: true });
-                
-                terminalContent.addEventListener('touchend', () => {
-                    userScrollTimeout = setTimeout(() => {
-                        isUserScrolling = false;
-                    }, 3000);
-                });
-                
-                terminalContent.addEventListener('wheel', () => {
-                    isUserScrolling = true;
-                    clearTimeout(userScrollTimeout);
-                    userScrollTimeout = setTimeout(() => {
-                        isUserScrolling = false;
-                    }, 3000);
-                });
-                
-                terminalContent.style.fontFamily = "'Inconsolata', monospace";
-                terminalContent.style.fontSize = "14px";
-                terminalContent.style.lineHeight = "1.4";
-                terminalContent.style.overflowY = "auto";
-                terminalContent.style.scrollBehavior = "smooth";
-            };
-            
-            const setActiveTerminal = (terminal) => {
-                document.querySelectorAll('.terminal-container').forEach(term => {
-                    term.classList.remove('active');
-                });
-                terminal.classList.add('active');
-                activeTerminal = terminal;
-                zIndexCounter += 1;
-                terminal.style.zIndex = zIndexCounter;
-            };
-            
-            const setupWindowControls = (terminalContainer, terminalId) => {
-                const redDot = terminalContainer.querySelector('.red-dot');
-                const yellowDot = terminalContainer.querySelector('.yellow-dot');
-                const greenDot = terminalContainer.querySelector('.green-dot');
-                
-                const handleClose = (e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    closeTerminal(terminalContainer);
-                };
+                // Register service worker for PWA
+                this.registerServiceWorker();
+            }
 
-                const handleMinimize = (e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    terminalContainer.style.opacity = '0';
-                    terminalContainer.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        terminalContainer.style.display = 'none';
-                        terminalContainer.style.transform = '';
-                    }, 300);
+            // Matrix Rain Effect - FIXED SPEED
+            initMatrixRain() {
+                const canvas = document.getElementById('matrixCanvas');
+                const ctx = canvas.getContext('2d');
+                let animationId;
+                let lastFrameTime = 0;
+                const frameDelay = 33; // 30fps - perfect speed
+                
+                const resizeCanvas = () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    this.setupMatrixDrops();
                 };
-
-                const handleMaximize = (e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    const state = windowStates[terminalId];
+                
+                this.setupMatrixDrops = () => {
+                    const fontSize = 14;
+                    const columns = Math.floor(canvas.width / fontSize);
+                    this.matrixDrops = [];
                     
-                    if (!state.isMaximized) {
-                        state.beforeMaximize.width = terminalContainer.style.width;
-                        state.beforeMaximize.height = terminalContainer.style.height;
-                        state.beforeMaximize.top = terminalContainer.style.top;
-                        state.beforeMaximize.left = terminalContainer.style.left;
-                        terminalContainer.classList.add('maximized');
-                        greenDot.querySelector('i').classList.remove('ph-square');
-                        greenDot.querySelector('i').classList.add('ph-corners-out');
-                    } else {
-                        terminalContainer.classList.remove('maximized');
-                        terminalContainer.style.width = state.beforeMaximize.width || '800px';
-                        terminalContainer.style.height = state.beforeMaximize.height || 'auto';
-                        terminalContainer.style.top = state.beforeMaximize.top || '50px';
-                        terminalContainer.style.left = state.beforeMaximize.left || '50px';
-                        greenDot.querySelector('i').classList.remove('ph-corners-out');
-                        greenDot.querySelector('i').classList.add('ph-square');
+                    for (let x = 0; x < columns; x++) {
+                        this.matrixDrops[x] = Math.random() * canvas.height / fontSize;
+                    }
+                };
+                
+                resizeCanvas();
+                
+                // Simple resize handler
+                window.addEventListener('resize', () => {
+                    requestAnimationFrame(resizeCanvas);
+                });
+                
+                const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const charArray = chars.split('');
+                const fontSize = 14;
+                
+                const draw = (currentTime) => {
+                    if (currentTime - lastFrameTime < frameDelay) {
+                        animationId = requestAnimationFrame(draw);
+                        return;
                     }
                     
-                    state.isMaximized = !state.isMaximized;
-                };
-
-                const handleActivate = (e) => {
-                    e.stopPropagation();
-                    setActiveTerminal(terminalContainer);
-                };
-
-                redDot.addEventListener('click', handleClose);
-                yellowDot.addEventListener('click', handleMinimize);
-                greenDot.addEventListener('click', handleMaximize);
-                redDot.addEventListener('touchstart', handleClose, { passive: false });
-                yellowDot.addEventListener('touchstart', handleMinimize, { passive: false });
-                greenDot.addEventListener('touchstart', handleMaximize, { passive: false });
-                terminalContainer.addEventListener('mousedown', handleActivate);
-                terminalContainer.addEventListener('touchstart', handleActivate, { passive: false });
-            };
-            
-            const closeTerminal = (terminalContainer) => {
-                terminalContainer.classList.add('closing');
-                setTimeout(() => {
-                    const header = terminalContainer.querySelector('.terminal-header');
-                    header.replaceWith(header.cloneNode(true));
-                    terminalContainer.remove();
-                    delete windowStates[terminalContainer.id];
-                    const index = allTerminals.indexOf(terminalContainer);
-                    if (index > -1) {
-                        allTerminals.splice(index, 1);
-                    }
-                }, 300);
-            };
-            
-            const closeAllTerminals = async () => {
-                const terminals = [...allTerminals];
-                let delay = 0;
-                
-                for (const terminal of terminals) {
-                    setTimeout(() => {
-                        const terminalContent = terminal.querySelector('.terminal-content');
-                        if (terminalContent) {
-                            addResponseLine(terminalContent, '[System] Terminal force closed by sudo user command, closing...');
-                            setTimeout(() => {
-                                closeTerminal(terminal);
-                            }, 500);
-                        }
-                    }, delay);
-                    delay += 800;
-                }
-                
-                if (terminals.length > 0) {
-                    setTimeout(() => {
-                        createTerminal();
-                    }, delay + 1000);
-                }
-            };
-            
-            const setupWindowDrag = (terminalContainer) => {
-                const header = terminalContainer.querySelector('.terminal-header');
-                let isDragging = false;
-                let startX, startY;
-                let initialX, initialY;
-                
-                const onMouseDown = (e) => {
-                    if (e.type === 'mousedown' && e.button !== 0) return;
-                    isDragging = true;
-                    startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-                    startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
-                    initialX = terminalContainer.offsetLeft;
-                    initialY = terminalContainer.offsetTop;
-                    terminalContainer.classList.add('dragging');
-                    setActiveTerminal(terminalContainer);
-                    terminalContainer.style.willChange = 'left, top';
-                };
-                
-                const onMouseMove = (e) => {
-                    if (!isDragging) return;
-                    e.preventDefault();
-                    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-                    const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
-                    requestAnimationFrame(() => {
-                        const newX = initialX + (clientX - startX);
-                        const newY = initialY + (clientY - startY);
-                        const maxX = window.innerWidth - terminalContainer.offsetWidth;
-                        const maxY = window.innerHeight - terminalContainer.offsetHeight;
-                        terminalContainer.style.left = `${Math.max(0, Math.min(maxX, newX))}px`;
-                        terminalContainer.style.top = `${Math.max(0, Math.min(maxY, newY))}px`;
-                    });
-                };
-                
-                const onMouseUp = () => {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    terminalContainer.classList.remove('dragging');
-                    terminalContainer.style.willChange = 'auto';
-                };
-                
-                header.addEventListener('mousedown', onMouseDown);
-                header.addEventListener('touchstart', onMouseDown);
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('touchmove', onMouseMove, { passive: false });
-                document.addEventListener('mouseup', onMouseUp);
-                document.addEventListener('touchend', onMouseUp);
-            };
-            
-            const setupWindowResize = (terminalContainer) => {
-                const handles = terminalContainer.querySelectorAll('.resize-handle');
-                let isResizing = false;
-                let currentHandle = null;
-                let startX, startY;
-                let startWidth, startHeight;
-                let startLeft, startTop;
-                
-                const minWidth = 300;
-                const minHeight = 200;
-                
-                const onStart = (e) => {
-                    const state = windowStates[terminalContainer.id];
-                    if (state && state.isMaximized) return;
-                    isResizing = true;
-                    currentHandle = e.target;
-                    currentHandle.classList.add('active');
-                    startX = e.clientX || e.touches[0].clientX;
-                    startY = e.clientY || e.touches[0].clientY;
-                    startWidth = terminalContainer.offsetWidth;
-                    startHeight = terminalContainer.offsetHeight;
-                    startLeft = terminalContainer.offsetLeft;
-                    startTop = terminalContainer.offsetTop;
-                    setActiveTerminal(terminalContainer);
-                    terminalContainer.style.willChange = 'width, height';
-                    document.body.style.cursor = window.getComputedStyle(currentHandle).cursor;
-                    if (e.preventDefault) e.preventDefault();
-                };
-                
-                const onMove = (e) => {
-                    if (!isResizing) return;
-                    e.preventDefault();
-                    const clientX = e.clientX || e.touches[0].clientX;
-                    const clientY = e.clientY || e.touches[0].clientY;
-                    requestAnimationFrame(() => {
-                        const dx = clientX - startX;
-                        const dy = clientY - startY;
-                        const handleClass = currentHandle.className;
-                        const maxWidth = window.innerWidth - startLeft;
-                        const maxHeight = window.innerHeight - startTop;
-                        if (handleClass.includes('se')) {
-                            const newWidth = Math.max(minWidth, Math.min(maxWidth, startWidth + dx));
-                            const newHeight = Math.max(minHeight, Math.min(maxHeight, startHeight + dy));
-                            terminalContainer.style.width = `${newWidth}px`;
-                            terminalContainer.style.height = `${newHeight}px`;
-                        } else {
-                            if (handleClass.includes('e')) {
-                                const newWidth = Math.max(minWidth, Math.min(maxWidth, startWidth + dx));
-                                terminalContainer.style.width = `${newWidth}px`;
+                    lastFrameTime = currentTime;
+                    
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    ctx.fillStyle = '#00ff41';
+                    ctx.font = fontSize + 'px Fira Code';
+                    
+                    if (this.matrixDrops) {
+                        for (let i = 0; i < this.matrixDrops.length; i++) {
+                            const text = charArray[Math.floor(Math.random() * charArray.length)];
+                            ctx.fillText(text, i * fontSize, this.matrixDrops[i] * fontSize);
+                            
+                            if (this.matrixDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                                this.matrixDrops[i] = 0;
                             }
-                            if (handleClass.includes('s')) {
-                                const newHeight = Math.max(minHeight, Math.min(maxHeight, startHeight + dy));
-                                terminalContainer.style.height = `${newHeight}px`;
-                            }
-                            if (handleClass.includes('w')) {
-                                const maxLeftPos = startLeft + startWidth - minWidth;
-                                const newWidth = Math.max(minWidth, startWidth - dx);
-                                const newLeft = Math.min(maxLeftPos, startLeft + (startWidth - newWidth));
-                                if (newLeft >= 0) {
-                                    terminalContainer.style.width = `${newWidth}px`;
-                                    terminalContainer.style.left = `${newLeft}px`;
-                                }
-                            }
-                            if (handleClass.includes('n')) {
-                                const maxTopPos = startTop + startHeight - minHeight;
-                                const newHeight = Math.max(minHeight, startHeight - dy);
-                                const newTop = Math.min(maxTopPos, startTop + (startHeight - newHeight));
-                                if (newTop >= 0) {
-                                    terminalContainer.style.height = `${newHeight}px`;
-                                    terminalContainer.style.top = `${newTop}px`;
-                                }
-                            }
-                        }
-                    });
-                };
-                
-                const onEnd = () => {
-                    if (!isResizing) return;
-                    isResizing = false;
-                    if (currentHandle) {
-                        currentHandle.classList.remove('active');
-                    }
-                    document.body.style.cursor = '';
-                    terminalContainer.style.willChange = 'auto';
-                };
-                
-                handles.forEach(handle => {
-                    handle.addEventListener('mousedown', onStart);
-                    handle.addEventListener('touchstart', onStart);
-                });
-
-                document.addEventListener('mousemove', onMove);
-                document.addEventListener('touchmove', onMove, { passive: false });
-                document.addEventListener('mouseup', onEnd);
-                document.addEventListener('touchend', onEnd);
-                document.addEventListener('touchcancel', onEnd);
-            };
-            
-            const addCommandLine = (terminalContent, command, isTyping = false) => {
-                const commandLine = document.createElement('div');
-                commandLine.className = 'command-line';
-                const prompt = document.createElement('div');
-                prompt.className = 'prompt';
-                prompt.innerHTML = 'user@neon-oracle:~/wisdom$ ';
-                const cmd = document.createElement('div');
-                cmd.className = isTyping ? 'command typing' : 'command';
-                cmd.textContent = command;
-                commandLine.appendChild(prompt);
-                commandLine.appendChild(cmd);
-                terminalContent.appendChild(commandLine);
-                terminalContent.scrollTop = terminalContent.scrollHeight;
-                return commandLine;
-            };
-            
-            const addResponseLine = (terminalContent, text) => {
-                const response = document.createElement('div');
-                response.className = 'response';
-                response.innerHTML = text;
-                terminalContent.appendChild(response);
-                terminalContent.scrollTop = terminalContent.scrollHeight;
-                return response;
-            };
-            
-            const addAsciiArt = (terminalContent, art) => {
-                const asciiArt = document.createElement('div');
-                asciiArt.className = 'ascii-art';
-                asciiArt.innerHTML = art;
-                terminalContent.appendChild(asciiArt);
-                terminalContent.scrollTop = terminalContent.scrollHeight;
-            };
-            
-            const typeText = (element, text, speed = 50) => {
-                return new Promise(resolve => {
-                    let i = 0;
-                    element.textContent = '';
-                    function type() {
-                        if (i < text.length) {
-                            element.textContent += text.charAt(i);
-                            i++;
-                            setTimeout(type, speed);
-                        } else {
-                            if (element.classList.contains('command')) {
-                                const cursor = document.createElement('span');
-                                cursor.className = 'cursor';
-                                element.appendChild(cursor);
-                            }
-                            resolve();
+                            this.matrixDrops[i]++;
                         }
                     }
-                    type();
-                });
-            };
-            let quotesData = null;
-            
-            async function loadQuotes() {
+                    
+                    animationId = requestAnimationFrame(draw);
+                };
+                
+                draw(0);
+                this.matrixAnimationId = animationId;
+            }
+
+            // Load quotes from GitHub
+            async loadQuotes() {
                 try {
-                    console.log('Attempting to fetch quotes.json...');
-                    const response = await fetch('./quotes.json');
-                    console.log('Response status:', response.status);
-                    if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
-                    quotesData = await response.json();
-                    console.log('Quotes loaded:', quotesData);
-                    updateConnectionStatus(true);
+                    console.log('Fetching quotes from GitHub...');
+                    const response = await fetch('https://raw.githubusercontent.com/Saganaki22/NeonOracle/refs/heads/main/quotes.json');
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    this.quotes = await response.json();
+                    console.log('✅ Quotes loaded successfully from GitHub!', this.quotes);
                     return true;
                 } catch (error) {
-                    console.error('Error loading quotes:', error);
-                    updateConnectionStatus(false);
-                    quotesData = {
+                    console.error('❌ Failed to load quotes from GitHub:', error);
+                    
+                    // Fallback quotes
+                    this.quotes = {
                         categories: {
-                            "Fallback": [
-                                { text: "The only fallback is to keep going.", author: "Unknown" }
+                            "Inspiration": [
+                                { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+                                { text: "Code is poetry written in logic.", author: "Anonymous" },
+                                { text: "In the world of algorithms, elegance is efficiency.", author: "Modern Oracle" }
+                            ],
+                            "Technology": [
+                                { text: "Any sufficiently advanced technology is indistinguishable from magic.", author: "Arthur C. Clarke" },
+                                { text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
+                                { text: "Programs must be written for people to read, and only incidentally for machines to execute.", author: "Harold Abelson" }
+                            ],
+                            "Philosophy": [
+                                { text: "The only way to make sense out of change is to plunge into it, move with it, and join the dance.", author: "Alan Watts" },
+                                { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle" },
+                                { text: "The cave you fear to enter holds the treasure you seek.", author: "Joseph Campbell" }
                             ]
                         }
                     };
@@ -1443,327 +1040,1466 @@
                 }
             }
 
-            function updateConnectionStatus(connected) {
-                const dots = document.querySelectorAll('.green-dot');
-                dots.forEach(dot => {
-                    if (connected) {
-                        dot.style.backgroundColor = 'var(--control-green)';
-                        dot.style.boxShadow = '0 0 5px var(--control-green)';
-                    } else {
-                        dot.style.backgroundColor = 'var(--control-green)';
-                        dot.style.boxShadow = 'none';
-                    }
-                });
-            }
-            
-            function getRandomQuote() {
-                if (!quotesData) return null;
-                const categories = Object.keys(quotesData.categories);
-                if (categories.length === 0) return null;
+            // Get random quote
+            getRandomQuote() {
+                if (!this.quotes) return null;
+                
+                const categories = Object.keys(this.quotes.categories);
                 const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-                const quotes = quotesData.categories[randomCategory];
-                if (!quotes || quotes.length === 0) return null;
+                const quotes = this.quotes.categories[randomCategory];
+                
                 return quotes[Math.floor(Math.random() * quotes.length)];
             }
 
-            async function fetchNewQuote(terminalContent, terminalId) {
-                const commandLine = addCommandLine(terminalContent, '');
-                await typeText(commandLine.querySelector('.command'), 'oracle --fetch-wisdom');
-                try {
-                    if (!quotesData && !await loadQuotes()) {
-                        throw new Error('Quotes not loaded');
-                    }
-                    const quote = getRandomQuote();
-                    if (!quote) throw new Error('No quotes available');
-                    showQuote(terminalContent, quote, terminalId, true);
-                    if (window.innerWidth > 768) {
-                        terminalContent.scrollTop = terminalContent.scrollHeight;
-                    }
-                } catch (error) {
-                    console.error('Error fetching quote:', error);
-                    addResponseLine(terminalContent, "Error: An unexpected error occurred. Please try again.");
-                }
-            }
-            
-            const showQuote = async (terminalContent, quote, terminalId, isApiQuote = false) => {
-                const responseTime = Math.floor(Math.random() * (38 - 18 + 1) + 18);
-                const quotePrefix = isApiQuote ? 
-                    `[API Quote - returned response 200 in ${responseTime}ms]` : 
-                    '[Local Quote]';
-                const formattedQuote = `${quotePrefix}] ${quote.text}`;
-                const quoteSection = document.createElement('div');
-                quoteSection.className = 'quote-section';
-                if (isApiQuote) {
-                    const apiIndicator = document.createElement('div');
-                    apiIndicator.style.display = 'flex';
-                    apiIndicator.style.alignItems = 'center';
-                    apiIndicator.style.marginBottom = '10px';
-                    apiIndicator.style.fontSize = '12px';
-                    apiIndicator.style.color = '#aaaaaa';
-                    const indicator = document.createElement('div');
-                    indicator.style.width = '8px';
-                    indicator.style.height = '8px';
-                    indicator.style.borderRadius = '50%';
-                    indicator.style.backgroundColor = '#00ff00';
-                    indicator.style.marginRight = '5px';
-                    indicator.style.animation = 'blink 2s infinite';
-                    apiIndicator.appendChild(indicator);
-                    apiIndicator.appendChild(document.createTextNode('API Quote'));
-                    quoteSection.appendChild(apiIndicator);
-                } else {
-                    const fallbackIndicator = document.createElement('div');
-                    fallbackIndicator.style.display = 'flex';
-                    fallbackIndicator.style.alignItems = 'center';
-                    fallbackIndicator.style.marginBottom = '10px';
-                    fallbackIndicator.style.fontSize = '12px';
-                    fallbackIndicator.style.color = '#aaaaaa';
-                    const indicator = document.createElement('div');
-                    indicator.style.width = '8px';
-                    indicator.style.height = '8px';
-                    indicator.style.borderRadius = '50%';
-                    indicator.style.backgroundColor = '#ff3030';
-                    indicator.style.marginRight = '5px';
-                    indicator.style.animation = 'blink 1s infinite';
-                    fallbackIndicator.appendChild(indicator);
-                    fallbackIndicator.appendChild(document.createTextNode('Fallback Quote'));
-                    quoteSection.appendChild(fallbackIndicator);
-                }
-                const quoteText = document.createElement('div');
-                quoteText.className = 'quote-text';
-                quoteText.textContent = quote.text;
-                const quoteAuthor = document.createElement('div');
-                quoteAuthor.className = 'quote-author';
-                quoteAuthor.textContent = quote.author ? `— ${quote.author}` : '— Unknown';
-                const shareContainer = document.createElement('div');
-                shareContainer.className = 'share-container';
-                const twitterButton = document.createElement('button');
-                twitterButton.className = 'terminal-button';
-                twitterButton.innerHTML = '<i class="ph ph-x" style="margin-right: 5px;"></i> Share on X';
-                twitterButton.addEventListener('click', () => {
-                    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${quote.text}" ${quote.author ? `— ${quote.author}` : '— Unknown'} #NeonOracle`)}`;
-                    window.open(twitterUrl, '_blank');
-                });
-                const copyButton = document.createElement('button');
-                copyButton.className = 'terminal-button';
-                copyButton.innerHTML = '<i class="ph ph-copy" style="margin-right: 5px;"></i> Copy';
-                copyButton.addEventListener('click', () => {
-                    const textToCopy = `"${quote.text}" ${quote.author ? `— ${quote.author}` : '— Unknown'}`;
-                    navigator.clipboard.writeText(textToCopy).then(() => {
-                        const notification = document.createElement('div');
-                        notification.className = 'copy-notification';
-                        notification.textContent = 'Copied to clipboard';
-                        quoteSection.appendChild(notification);
-                        setTimeout(() => {
-                            notification.classList.add('show');
-                            setTimeout(() => {
-                                notification.classList.remove('show');
-                                setTimeout(() => {
-                                    notification.remove();
-                                }, 300);
-                            }, 2000);
-                        }, 10);
-                    });
-                });
-                const newQuoteButton = document.createElement('button');
-                newQuoteButton.className = 'terminal-button';
-                newQuoteButton.innerHTML = '<i class="ph ph-arrows-clockwise" style="margin-right: 5px;"></i> New Quote';
-                newQuoteButton.addEventListener('click', () => {
-                    fetchNewQuote(terminalContent, terminalId);
-                });
-                const newTerminalButton = document.createElement('button');
-                newTerminalButton.className = 'terminal-button';
-                newTerminalButton.innerHTML = '<i class="ph ph-terminal" style="margin-right: 5px;"></i> New Terminal';
-                newTerminalButton.addEventListener('click', () => {
-                    createTerminal();
-                });
-                shareContainer.appendChild(twitterButton);
-                shareContainer.appendChild(copyButton);
-                shareContainer.appendChild(newQuoteButton);
-                shareContainer.appendChild(newTerminalButton);
-                quoteSection.appendChild(quoteText);
-                quoteSection.appendChild(quoteAuthor);
-                quoteSection.appendChild(shareContainer);
-                terminalContent.appendChild(quoteSection);
-                terminalContent.scrollTop = terminalContent.scrollHeight;
-                const quoteCount = parseInt(localStorage.getItem(`terminal_${terminalId}_quoteCount`) || '0');
-                if (isApiQuote) {
-                    addResponseLine(terminalContent, `[System] Quote #${quoteCount} retrieved from <a href="https://drbaph.dev" onclick="addResponseLine(this.closest('.terminal-content'), '[System] Redirecting to 127.0.0.1...'); setTimeout(() => window.location.href = 'https://drbaph.dev', 1000); return false;" style="color: #0f0; text-decoration: underline;">drbaph.dev</a> internal API.`);
-                } else {
-                    addResponseLine(terminalContent, `[System] Quote #${quoteCount} retrieved from local cache. Type "reconnect" to retry API.`);
-                }
-                localStorage.setItem(`terminal_${terminalId}_quoteCount`, (quoteCount + 1).toString());
-            };
-            
-            const hackingMessages = [
-                '[SYSTEM] Initializing h4x protocol...',
-                '[WARNING] Unauthorized access detected',
-                '[SYSTEM] Bypassing security measures...',
-                '[ALERT] Firewall breach detected',
-                '[SYSTEM] Accessing mainframe...',
-                '[SYSTEM] Decrypting neural pathways...',
-                '[ALERT] Neural bridge established',
-                '[SYSTEM] Reality distortion field activated',
-                '[SYSTEM] Matrix connection established',
-                '[SYSTEM] Welcome to the real world...'
-            ];
-
-            async function displayHackingSequence(content) {
-                const typeDelay = 50;
-                const messageDelay = 300;
+            // Setup event listeners
+            setupEventListeners() {
+                const newTerminalBtn = document.getElementById('newTerminalBtn');
+                const gameMenuBtn = document.getElementById('gameMenuBtn');
+                const bgProjectName = document.getElementById('bgProjectName');
+                const gameOverlay = document.getElementById('gameOverlay');
                 
-                for (const message of hackingMessages) {
-                    const line = addResponseLine(content, '');
-                    for (let i = 0; i < message.length; i++) {
-                        line.textContent = message.substring(0, i + 1);
-                        await new Promise(resolve => setTimeout(resolve, typeDelay));
+                newTerminalBtn.addEventListener('click', () => this.createTerminal());
+                gameMenuBtn.addEventListener('click', () => this.showGameMenu());
+                
+                // Background click handler
+                bgProjectName.addEventListener('click', (e) => {
+                    if (!this.isOverTerminal(e)) {
+                        window.open('https://github.com/saganaki22/neonoracle', '_blank');
                     }
-                    await new Promise(resolve => setTimeout(resolve, messageDelay));
+                });
+
+                // Close game overlay when clicked outside
+                gameOverlay.addEventListener('click', (e) => {
+                    if (e.target === gameOverlay) {
+                        this.closeGame();
+                    }
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        switch (e.key) {
+                            case 't':
+                                e.preventDefault();
+                                this.createTerminal();
+                                break;
+                            case 'w':
+                                e.preventDefault();
+                                if (this.activeTerminal) {
+                                    this.closeTerminal(this.activeTerminal);
+                                }
+                                break;
+                        }
+                    }
+                    
+                    // Close game on escape
+                    if (e.key === 'Escape' && this.gameInstance) {
+                        this.closeGame();
+                    }
+                });
+
+                // Simple resize handler
+                window.addEventListener('resize', () => {
+                    this.handleResize();
+                });
+            }
+
+            // Utility: Simple debounce function
+            debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Check if mouse is over terminal
+            isOverTerminal(event) {
+                const terminals = document.querySelectorAll('.terminal-container');
+                for (const terminal of terminals) {
+                    const rect = terminal.getBoundingClientRect();
+                    if (event.clientX >= rect.left && event.clientX <= rect.right &&
+                        event.clientY >= rect.top && event.clientY <= rect.bottom) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            // Handle window resize - SIMPLIFIED
+            handleResize() {
+                const isMobile = window.innerWidth <= 768;
+                
+                this.terminals.forEach(terminal => {
+                    if (isMobile) {
+                        terminal.style.width = '100vw';
+                        terminal.style.height = '100vh';
+                        terminal.style.top = '0';
+                        terminal.style.left = '0';
+                    }
+                });
+            }
+
+            // Create terminal
+            createTerminal() {
+                const template = document.getElementById('terminalTemplate');
+                const terminalElement = template.content.cloneNode(true).querySelector('.terminal-container');
+                const terminalId = `terminal-${Date.now()}`;
+                
+                terminalElement.id = terminalId;
+                
+                // Position terminal
+                const isMobile = window.innerWidth <= 768;
+                if (!isMobile) {
+                    const offset = this.terminals.size * 30;
+                    terminalElement.style.left = `${Math.min(offset + 50, window.innerWidth - 650)}px`;
+                    terminalElement.style.top = `${Math.min(offset + 50, window.innerHeight - 450)}px`;
+                    terminalElement.style.width = '60vw';
+                    terminalElement.style.height = '70vh';
+                }
+                
+                document.body.appendChild(terminalElement);
+                
+                // Store terminal reference
+                this.terminals.set(terminalId, terminalElement);
+                
+                // Setup terminal
+                this.setupTerminalControls(terminalElement);
+                this.setupTerminalDrag(terminalElement);
+                this.setupTerminalResize(terminalElement);
+                this.setupTerminalInput(terminalElement);
+                this.setActiveTerminal(terminalElement);
+                
+                // Initialize terminal content
+                this.initTerminalContent(terminalElement);
+                
+                return terminalElement;
+            }
+
+            // Setup terminal controls
+            setupTerminalControls(terminal) {
+                const controls = terminal.querySelector('.terminal-controls');
+                const redDot = controls.querySelector('.red-dot');
+                const yellowDot = controls.querySelector('.yellow-dot');
+                const greenDot = controls.querySelector('.green-dot');
+                
+                redDot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.closeTerminal(terminal);
+                });
+                
+                yellowDot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.minimizeTerminal(terminal);
+                });
+                
+                greenDot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleMaximizeTerminal(terminal);
+                });
+                
+                // Click to focus
+                terminal.addEventListener('click', () => {
+                    this.setActiveTerminal(terminal);
+                });
+            }
+
+            // Close terminal
+            closeTerminal(terminal) {
+                terminal.classList.add('closing');
+                
+                // Clean up drag events
+                if (terminal._dragCleanup) {
+                    terminal._dragCleanup();
+                }
+                
+                setTimeout(() => {
+                    terminal.remove();
+                    this.terminals.delete(terminal.id);
+                    
+                    // Set focus to another terminal if available
+                    if (this.activeTerminal === terminal) {
+                        const remainingTerminals = Array.from(this.terminals.values());
+                        if (remainingTerminals.length > 0) {
+                            this.setActiveTerminal(remainingTerminals[0]);
+                        } else {
+                            this.activeTerminal = null;
+                        }
+                    }
+                }, 300);
+            }
+
+            // Minimize terminal
+            minimizeTerminal(terminal) {
+                terminal.classList.add('minimized');
+                setTimeout(() => {
+                    terminal.style.display = 'none';
+                    terminal.classList.remove('minimized');
+                }, 300);
+            }
+
+            // Toggle maximize terminal
+            toggleMaximizeTerminal(terminal) {
+                const isMaximized = terminal.classList.contains('maximized');
+                const greenDot = terminal.querySelector('.green-dot i');
+                
+                if (isMaximized) {
+                    terminal.classList.remove('maximized');
+                    greenDot.className = 'ph ph-square';
+                } else {
+                    terminal.classList.add('maximized');
+                    greenDot.className = 'ph ph-corners-out';
+                }
+            }
+
+            // Set active terminal
+            setActiveTerminal(terminal) {
+                // Remove active class from all terminals
+                this.terminals.forEach(t => t.classList.remove('active'));
+                
+                // Set active
+                terminal.classList.add('active');
+                this.activeTerminal = terminal;
+                
+                // Bring to front
+                terminal.style.zIndex = ++this.zIndexCounter;
+                
+                // Focus input
+                const input = terminal.querySelector('.terminal-input');
+                input?.focus();
+            }
+
+            // Setup terminal drag (desktop only) - FIXED DRAGGING
+            setupTerminalDrag(terminal) {
+                if (window.innerWidth <= 768) return;
+                
+                const header = terminal.querySelector('.terminal-header');
+                let isDragging = false;
+                let dragData = null;
+                
+                const onMouseDown = (e) => {
+                    if (e.target.closest('.terminal-controls')) return;
+                    if (isDragging) return; // Prevent multiple drags
+                    
+                    isDragging = true;
+                    this.isDragging = true;
+                    
+                    dragData = {
+                        startX: e.clientX,
+                        startY: e.clientY,
+                        startLeft: terminal.offsetLeft,
+                        startTop: terminal.offsetTop,
+                        terminal: terminal
+                    };
+                    
+                    terminal.classList.add('dragging');
+                    this.setActiveTerminal(terminal);
+                    
+                    e.preventDefault();
+                    e.stopPropagation();
+                };
+                
+                const onMouseMove = (e) => {
+                    if (!isDragging || !dragData || dragData.terminal !== terminal) return;
+                    
+                    const deltaX = e.clientX - dragData.startX;
+                    const deltaY = e.clientY - dragData.startY;
+                    
+                    const newLeft = Math.max(0, Math.min(window.innerWidth - terminal.offsetWidth, dragData.startLeft + deltaX));
+                    const newTop = Math.max(0, Math.min(window.innerHeight - terminal.offsetHeight, dragData.startTop + deltaY));
+                    
+                    terminal.style.left = `${newLeft}px`;
+                    terminal.style.top = `${newTop}px`;
+                    
+                    e.preventDefault();
+                    e.stopPropagation();
+                };
+                
+                const onMouseUp = (e) => {
+                    if (!isDragging) return;
+                    
+                    isDragging = false;
+                    this.isDragging = false;
+                    dragData = null;
+                    terminal.classList.remove('dragging');
+                    
+                    e.preventDefault();
+                    e.stopPropagation();
+                };
+                
+                // Bind events specifically to this terminal
+                header.addEventListener('mousedown', onMouseDown);
+                
+                // Store cleanup function
+                terminal._dragCleanup = () => {
+                    header.removeEventListener('mousedown', onMouseDown);
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                };
+                
+                // Global move and up events
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            }
+
+            // Setup terminal resize (desktop only)
+            setupTerminalResize(terminal) {
+                if (window.innerWidth <= 768) return;
+                
+                const handles = terminal.querySelectorAll('.resize-handle');
+                let resizeData = null;
+                
+                const minWidth = 400;
+                const minHeight = 300;
+                
+                handles.forEach(handle => {
+                    handle.addEventListener('mousedown', (e) => {
+                        this.isResizing = true;
+                        resizeData = {
+                            handle: handle,
+                            startX: e.clientX,
+                            startY: e.clientY,
+                            startWidth: terminal.offsetWidth,
+                            startHeight: terminal.offsetHeight,
+                            startLeft: terminal.offsetLeft,
+                            startTop: terminal.offsetTop
+                        };
+                        
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (!this.isResizing || !resizeData) return;
+                    
+                    const deltaX = e.clientX - resizeData.startX;
+                    const deltaY = e.clientY - resizeData.startY;
+                    const handleClass = resizeData.handle.className;
+                    
+                    let newWidth = resizeData.startWidth;
+                    let newHeight = resizeData.startHeight;
+                    let newLeft = resizeData.startLeft;
+                    let newTop = resizeData.startTop;
+                    
+                    if (handleClass.includes('se')) {
+                        newWidth = Math.max(minWidth, resizeData.startWidth + deltaX);
+                        newHeight = Math.max(minHeight, resizeData.startHeight + deltaY);
+                    } else if (handleClass.includes('sw')) {
+                        newWidth = Math.max(minWidth, resizeData.startWidth - deltaX);
+                        newHeight = Math.max(minHeight, resizeData.startHeight + deltaY);
+                        newLeft = resizeData.startLeft + (resizeData.startWidth - newWidth);
+                    } else if (handleClass.includes('ne')) {
+                        newWidth = Math.max(minWidth, resizeData.startWidth + deltaX);
+                        newHeight = Math.max(minHeight, resizeData.startHeight - deltaY);
+                        newTop = resizeData.startTop + (resizeData.startHeight - newHeight);
+                    } else if (handleClass.includes('nw')) {
+                        newWidth = Math.max(minWidth, resizeData.startWidth - deltaX);
+                        newHeight = Math.max(minHeight, resizeData.startHeight - deltaY);
+                        newLeft = resizeData.startLeft + (resizeData.startWidth - newWidth);
+                        newTop = resizeData.startTop + (resizeData.startHeight - newHeight);
+                    } else if (handleClass.includes('e')) {
+                        newWidth = Math.max(minWidth, resizeData.startWidth + deltaX);
+                    } else if (handleClass.includes('w')) {
+                        newWidth = Math.max(minWidth, resizeData.startWidth - deltaX);
+                        newLeft = resizeData.startLeft + (resizeData.startWidth - newWidth);
+                    } else if (handleClass.includes('s')) {
+                        newHeight = Math.max(minHeight, resizeData.startHeight + deltaY);
+                    } else if (handleClass.includes('n')) {
+                        newHeight = Math.max(minHeight, resizeData.startHeight - deltaY);
+                        newTop = resizeData.startTop + (resizeData.startHeight - newHeight);
+                    }
+                    
+                    requestAnimationFrame(() => {
+                        terminal.style.width = `${newWidth}px`;
+                        terminal.style.height = `${newHeight}px`;
+                        terminal.style.left = `${newLeft}px`;
+                        terminal.style.top = `${newTop}px`;
+                    });
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    if (!this.isResizing) return;
+                    
+                    this.isResizing = false;
+                    resizeData = null;
+                });
+            }
+
+            // Setup terminal input
+            setupTerminalInput(terminal) {
+                const input = terminal.querySelector('.terminal-input');
+                const content = terminal.querySelector('.terminal-content');
+                
+                // Placeholder rotation
+                const placeholders = [
+                    'help - show available commands',
+                    'quote - get inspirational quote',
+                    'games - play retro games',
+                    'matrix - toggle matrix rain',
+                    'clear - clear terminal',
+                    'whoami - system information'
+                ];
+                
+                let placeholderIndex = 0;
+                const rotatePlaceholder = () => {
+                    input.placeholder = placeholders[placeholderIndex];
+                    placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+                };
+                
+                rotatePlaceholder();
+                const placeholderInterval = setInterval(rotatePlaceholder, 3000);
+                
+                // Command handling
+                input.addEventListener('keydown', async (e) => {
+                    if (e.key === 'Enter') {
+                        const command = input.value.trim();
+                        input.value = '';
+                        
+                        if (command) {
+                            this.addCommandLine(content, command);
+                            await this.executeCommand(command, content, terminal);
+                        }
+                    }
+                });
+                
+                // Clean up interval when terminal is closed
+                terminal.addEventListener('beforeunload', () => {
+                    clearInterval(placeholderInterval);
+                });
+            }
+
+            // Add command line to terminal
+            addCommandLine(content, command) {
+                const commandLine = document.createElement('div');
+                commandLine.className = 'command-line';
+                commandLine.innerHTML = `
+                    <span class="prompt">user@neon-oracle:~$</span>
+                    <span class="command">${this.escapeHtml(command)}</span>
+                `;
+                content.appendChild(commandLine);
+                this.scrollToBottom(content);
+            }
+
+            // Add response to terminal
+            addResponse(content, text, className = 'response') {
+                const response = document.createElement('div');
+                response.className = className;
+                response.innerHTML = text;
+                content.appendChild(response);
+                this.scrollToBottom(content);
+                return response;
+            }
+
+            // Scroll to bottom
+            scrollToBottom(content) {
+                requestAnimationFrame(() => {
+                    content.scrollTop = content.scrollHeight;
+                });
+            }
+
+            // Escape HTML
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // Execute command
+            async executeCommand(command, content, terminal) {
+                const cmd = command.toLowerCase();
+                
+                switch (cmd) {
+                    case 'help':
+                        this.showHelp(content);
+                        break;
+                    case 'quote':
+                        await this.showQuote(content);
+                        break;
+                    case 'games':
+                        this.showGameMenu();
+                        break;
+                    case 'snake':
+                        this.startGame('snake');
+                        break;
+                    case 'tetris':
+                        this.startGame('tetris');
+                        break;
+                    case 'pong':
+                        this.startGame('pong');
+                        break;
+                    case 'matrix':
+                        this.toggleMatrix(content);
+                        break;
+                    case 'clear':
+                        content.innerHTML = '';
+                        break;
+                    case 'whoami':
+                        this.showSystemInfo(content);
+                        break;
+                    case 'exit':
+                    case 'quit':
+                        this.closeTerminal(terminal);
+                        break;
+                    case 'hack':
+                        await this.runHackSequence(content);
+                        break;
+                    case 'love':
+                        await this.showLove(content);
+                        break;
+                    case 'neofetch':
+                        this.showNeofetch(content);
+                        break;
+                    default:
+                        this.addResponse(content, `Command not found: ${command}`, 'response error');
+                        this.addResponse(content, "Type 'help' for available commands.", 'response');
+                }
+            }
+
+            // Show help
+            showHelp(content) {
+                const helpText = `
+<span class="success">Available Commands:</span>
+
+<span class="info">System Commands:</span>
+  help      - Show this help message
+  clear     - Clear terminal screen
+  exit      - Close terminal
+  whoami    - Show system information
+  neofetch  - Display system info with ASCII art
+
+<span class="info">Content Commands:</span>
+  quote     - Get inspirational quote
+  matrix    - Toggle matrix rain effect
+
+<span class="info">Games & Entertainment:</span>
+  games     - Open games menu
+  snake     - Play Snake game
+  tetris    - Play Tetris
+  pong      - Play Pong
+
+<span class="info">Easter Eggs:</span>
+  hack      - Run hacking simulation
+  love      - Show some love ❤️
+
+<span class="warning">Tip:</span> Use Ctrl+T for new terminal, Ctrl+W to close current terminal
+                `;
+                this.addResponse(content, helpText);
+            }
+
+            // Show quote
+            async showQuote(content) {
+                const loadingResponse = this.addResponse(content, 'Fetching wisdom from the Oracle <span class="loading-dots"><span></span><span></span><span></span></span>');
+                
+                // Simulate loading delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                const quote = this.getRandomQuote();
+                if (quote) {
+                    loadingResponse.remove();
+                    
+                    const quoteSection = document.createElement('div');
+                    quoteSection.className = 'quote-section';
+                    quoteSection.innerHTML = `
+                        <div class="quote-text">"${quote.text}"</div>
+                        <div class="quote-author">— ${quote.author}</div>
+                        <div class="share-container">
+                            <button class="terminal-button" onclick="navigator.clipboard.writeText('${quote.text} — ${quote.author}')">
+                                <i class="ph ph-copy"></i> Copy
+                            </button>
+                            <button class="terminal-button" onclick="window.open('https://twitter.com/intent/tweet?text=${encodeURIComponent(quote.text + ' — ' + quote.author)}', '_blank')">
+                                <i class="ph ph-twitter-logo"></i> Tweet
+                            </button>
+                        </div>
+                    `;
+                    content.appendChild(quoteSection);
+                } else {
+                    loadingResponse.innerHTML = '<span class="error">Failed to fetch quote. Try again later.</span>';
+                }
+                
+                this.scrollToBottom(content);
+            }
+
+            // Show system info
+            showSystemInfo(content) {
+                const info = `
+<span class="success">System Information:</span>
+User: neon-oracle-user
+OS: Neon Oracle Linux v3.0
+Kernel: 6.1.0-neon
+Shell: /bin/neon-bash
+Terminal: Neon Terminal Emulator
+Uptime: ${this.getUptime()}
+Memory: ${this.getMemoryInfo()}
+CPU: Quantum Processing Unit
+Network: Connected to the Matrix
+                `;
+                this.addResponse(content, info);
+            }
+
+            // Show neofetch
+            showNeofetch(content) {
+                const asciiArt = `
+    <pre class="ascii-art">
+        ████████╗ ██████╗ ██████╗  █████╗  ██████╗██╗     ███████╗
+        ╚══██╔══╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝██║     ██╔════╝
+           ██║   ██║   ██║██████╔╝███████║██║     ██║     █████╗  
+           ██║   ██║   ██║██╔══██╗██╔══██║██║     ██║     ██╔══╝  
+           ██║   ╚██████╔╝██║  ██║██║  ██║╚██████╗███████╗███████╗
+           ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝
+    </pre>
+                `;
+                
+                const systemInfo = `
+<span class="info">OS:</span> Neon Oracle Linux v3.0
+<span class="info">Host:</span> Quantum Mainframe
+<span class="info">Kernel:</span> 6.1.0-neon-oracle
+<span class="info">Uptime:</span> ${this.getUptime()}
+<span class="info">Shell:</span> neon-bash 5.1.16
+<span class="info">Terminal:</span> Neon Terminal Emulator
+<span class="info">CPU:</span> Quantum Processing Unit (8 cores)
+<span class="info">GPU:</span> Neural Graphics Processor
+<span class="info">Memory:</span> ${this.getMemoryInfo()}
+                `;
+                
+                this.addResponse(content, asciiArt + systemInfo);
+            }
+
+            // Get uptime
+            getUptime() {
+                const start = performance.now();
+                const seconds = Math.floor(start / 1000);
+                const minutes = Math.floor(seconds / 60);
+                const hours = Math.floor(minutes / 60);
+                return `${hours}h ${minutes % 60}m ${seconds % 60}s`;
+            }
+
+            // Get memory info
+            getMemoryInfo() {
+                if (navigator.deviceMemory) {
+                    return `${navigator.deviceMemory}GB`;
+                }
+                return '8GB (estimated)';
+            }
+
+            // Toggle matrix rain
+            toggleMatrix(content) {
+                const matrixRain = document.querySelector('.matrix-rain');
+                const isVisible = matrixRain.style.opacity !== '0';
+                
+                if (isVisible) {
+                    matrixRain.style.opacity = '0';
+                    this.addResponse(content, '<span class="success">Matrix rain disabled</span>');
+                } else {
+                    matrixRain.style.opacity = '0.1';
+                    this.addResponse(content, '<span class="success">Matrix rain enabled</span>');
+                }
+            }
+
+            // Run hack sequence - Enhanced with progress bar
+            async runHackSequence(content) {
+                const hackMessages = [
+                    'Initializing hack sequence...',
+                    'Bypassing firewall protocols...',
+                    'Scanning network vulnerabilities...',
+                    'Injecting payload into mainframe...',
+                    'Cracking 256-bit encryption...',
+                    'Accessing secure databases...',
+                    'Extracting classified files...',
+                    'Installing backdoor access...',
+                    'Erasing digital footprints...',
+                    'Laundering through proxy chains...',
+                    'Final system penetration...',
+                    'Mission accomplished! 🎯'
+                ];
+                
+                // Create progress bar
+                const progressContainer = document.createElement('div');
+                progressContainer.innerHTML = `
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="hackProgress"></div>
+                    </div>
+                `;
+                content.appendChild(progressContainer);
+                
+                const progressBar = progressContainer.querySelector('#hackProgress');
+                
+                for (let i = 0; i < hackMessages.length; i++) {
+                    const message = hackMessages[i];
+                    const isLast = i === hackMessages.length - 1;
+                    const className = isLast ? 'response success' : 'response';
+                    
+                    this.addResponse(content, message, className);
+                    
+                    // Update progress bar
+                    const progress = ((i + 1) / hackMessages.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    await new Promise(resolve => setTimeout(resolve, 600));
+                }
+                
+                // Remove progress bar and redirect - FIXED
+                setTimeout(() => {
+                    progressContainer.remove();
+                    this.addResponse(content, '<span class="success">Opening secure terminal...</span>');
+                    setTimeout(() => {
+                        window.open('https://www.youtube.com/watch?v=qbWqXKN3m3c', '_blank');
+                    }, 1000);
+                }, 500);
+            }
+
+            // Show love - Enhanced with redirect
+            async showLove(content) {
+                const loveText = `
+<span style="color: #ff69b4;">
+   ❤️  ❤️  ❤️  ❤️  ❤️  ❤️  ❤️  ❤️  ❤️
+  ❤️  Made with love by the Oracle  ❤️
+   ❤️  ❤️  ❤️  ❤️  ❤️  ❤️  ❤️  ❤️  ❤️
+</span>
+
+<span class="success">Loading special message...</span>
+                `;
+                this.addResponse(content, loveText);
+                
+                // Wait and redirect
+                setTimeout(() => {
+                    this.addResponse(content, '<span class="info">Redirecting to a special message from the Oracle... 💝</span>');
+                    setTimeout(() => {
+                        window.open('https://www.youtube.com/watch?v=tb4ozEOZh8U', '_blank');
+                    }, 2000);
+                }, 1500);
+            }
+
+            // Initialize terminal content
+            async initTerminalContent(terminal) {
+                const content = terminal.querySelector('.terminal-content');
+                
+                // Welcome message
+                const welcomeArt = `
+    <pre class="ascii-art">
+    ███╗   ██╗███████╗ ██████╗ ███╗   ██╗
+    ████╗  ██║██╔════╝██╔═══██╗████╗  ██║
+    ██╔██╗ ██║█████╗  ██║   ██║██╔██╗ ██║
+    ██║╚██╗██║██╔══╝  ██║   ██║██║╚██╗██║
+    ██║ ╚████║███████╗╚██████╔╝██║ ╚████║
+    ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
+                      
+     ██████╗ ██████╗  █████╗  ██████╗██╗     ███████╗
+    ██╔═══██╗██╔══██╗██╔══██╗██╔════╝██║     ██╔════╝
+    ██║   ██║██████╔╝███████║██║     ██║     █████╗  
+    ██║   ██║██╔══██╗██╔══██║██║     ██║     ██╔══╝  
+    ╚██████╔╝██║  ██║██║  ██║╚██████╗███████╗███████╗
+     ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝
+                      
+                      v3.0 - Modern Edition
+    </pre>
+                `;
+                
+                this.addResponse(content, welcomeArt);
+                this.addResponse(content, '<span class="success">Welcome to Neon Oracle v3.0 - Modern Edition</span>');
+                this.addResponse(content, '<span class="info">Now loading quotes from GitHub repository!</span>');
+                this.addResponse(content, "Type 'help' to see available commands or 'quote' for wisdom.");
+                
+                // Auto-fetch first quote
+                setTimeout(() => {
+                    this.executeCommand('quote', content, terminal);
+                }, 1000);
+            }
+
+            // Show game menu
+            showGameMenu() {
+                if (this.activeTerminal) {
+                    const content = this.activeTerminal.querySelector('.terminal-content');
+                    const gameMenu = `
+<span class="success">🎮 Game Menu</span>
+
+Available Games:
+  <span class="info">snake</span>  - Classic Snake game
+  <span class="info">tetris</span> - Block puzzle game
+  <span class="info">pong</span>   - Retro ping pong
+
+Type the game name to start playing!
+                    `;
+                    this.addResponse(content, gameMenu);
+                }
+            }
+
+            // Start game - FIXED
+            startGame(gameName) {
+                const gameOverlay = document.getElementById('gameOverlay');
+                const canvas = document.getElementById('gameCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Clear previous game
+                if (this.gameInstance) {
+                    this.gameInstance.stop();
+                    this.gameInstance = null;
+                }
+                
+                // Reset canvas size
+                canvas.width = 400;
+                canvas.height = 400;
+                
+                // Show game overlay and canvas
+                gameOverlay.classList.add('active');
+                canvas.classList.add('active');
+                
+                // Clear canvas
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Small delay to ensure DOM is updated
+                setTimeout(() => {
+                    // Create game instance
+                    switch (gameName) {
+                        case 'snake':
+                            this.gameInstance = new SnakeGame(ctx, canvas);
+                            break;
+                        case 'tetris':
+                            this.gameInstance = new TetrisGame(ctx, canvas);
+                            break;
+                        case 'pong':
+                            this.gameInstance = new PongGame(ctx, canvas);
+                            break;
+                    }
+                }, 50);
+            }
+
+            // Close game
+            closeGame() {
+                const gameOverlay = document.getElementById('gameOverlay');
+                const canvas = document.getElementById('gameCanvas');
+                
+                gameOverlay.classList.remove('active');
+                canvas.classList.remove('active');
+                
+                if (this.gameInstance) {
+                    this.gameInstance.stop();
+                    this.gameInstance = null;
+                }
+                
+                // Clear canvas
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Register service worker for PWA
+            async registerServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    try {
+                        const registration = await navigator.serviceWorker.register('/sw.js');
+                        console.log('ServiceWorker registered:', registration);
+                    } catch (error) {
+                        console.log('ServiceWorker registration failed:', error);
+                    }
+                }
+            }
+        }
+
+        // Snake Game Class - FIXED AND IMPROVED
+        class SnakeGame {
+            constructor(ctx, canvas) {
+                this.ctx = ctx;
+                this.canvas = canvas;
+                this.gridSize = 20;
+                this.snake = [{ x: 200, y: 200 }];
+                this.food = this.generateFood();
+                this.direction = { x: 0, y: 0 };
+                this.score = 0;
+                this.gameRunning = true;
+                this.lastTime = 0;
+                this.gameSpeed = 150; // milliseconds
+                
+                console.log('Snake game initialized');
+                this.bindEvents();
+                
+                // Start the game loop
+                requestAnimationFrame((time) => this.gameLoop(time));
+            }
+            
+            generateFood() {
+                let newFood;
+                do {
+                    newFood = {
+                        x: Math.floor(Math.random() * (this.canvas.width / this.gridSize)) * this.gridSize,
+                        y: Math.floor(Math.random() * (this.canvas.height / this.gridSize)) * this.gridSize
+                    };
+                } while (this.snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
+                
+                return newFood;
+            }
+            
+            bindEvents() {
+                this.keyHandler = (e) => {
+                    if (!this.gameRunning) return;
+                    
+                    e.preventDefault();
+                    switch (e.key) {
+                        case 'ArrowUp':
+                        case 'w':
+                        case 'W':
+                            if (this.direction.y === 0) this.direction = { x: 0, y: -this.gridSize };
+                            break;
+                        case 'ArrowDown':
+                        case 's':
+                        case 'S':
+                            if (this.direction.y === 0) this.direction = { x: 0, y: this.gridSize };
+                            break;
+                        case 'ArrowLeft':
+                        case 'a':
+                        case 'A':
+                            if (this.direction.x === 0) this.direction = { x: -this.gridSize, y: 0 };
+                            break;
+                        case 'ArrowRight':
+                        case 'd':
+                        case 'D':
+                            if (this.direction.x === 0) this.direction = { x: this.gridSize, y: 0 };
+                            break;
+                    }
+                };
+                document.addEventListener('keydown', this.keyHandler);
+            }
+            
+            gameLoop(currentTime) {
+                if (!this.gameRunning) return;
+                
+                if (currentTime - this.lastTime >= this.gameSpeed) {
+                    this.update();
+                    this.lastTime = currentTime;
+                }
+                
+                this.draw();
+                requestAnimationFrame((time) => this.gameLoop(time));
+            }
+            
+            update() {
+                if (this.direction.x === 0 && this.direction.y === 0) return;
+                
+                const head = { x: this.snake[0].x + this.direction.x, y: this.snake[0].y + this.direction.y };
+                
+                // Check collision with walls
+                if (head.x < 0 || head.x >= this.canvas.width || head.y < 0 || head.y >= this.canvas.height) {
+                    this.gameOver();
+                    return;
+                }
+                
+                // Check collision with self
+                if (this.snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+                    this.gameOver();
+                    return;
+                }
+                
+                this.snake.unshift(head);
+                
+                // Check food collision
+                if (head.x === this.food.x && head.y === this.food.y) {
+                    this.score += 10;
+                    this.food = this.generateFood();
+                    // Increase speed slightly
+                    this.gameSpeed = Math.max(80, this.gameSpeed - 2);
+                } else {
+                    this.snake.pop();
                 }
             }
             
-            const setupTerminalInput = (terminalInput, terminalId) => {
-                terminalInput.addEventListener('keydown', async (e) => {
-                    if (e.key === 'Enter') {
-                        const command = terminalInput.value.trim();
-                        terminalInput.value = '';
-                        addCommandLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), command);
-                        
-                        if (command.toLowerCase() === 'sudo close-all') {
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Initiating terminal shutdown sequence...');
-                            await new Promise(resolve => setTimeout(resolve, 500));
-                            closeAllTerminals();
-                        } else if (command.toLowerCase() === '!help') {
-                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
-                            addResponseLine(content, '[System] Standard commands:');
-                            addResponseLine(content, '  clear          - Reset terminal display');
-                            addResponseLine(content, '  reconnect      - Attempt connection restore');
-                            addResponseLine(content, '  sudo close-all - Emergency protocol');
-                            addResponseLine(content, '[System] Hidden protocols detected...');
-                            addResponseLine(content, '  sudo goto-repo  - [ACCESS RESTRICTED]');
-                            addResponseLine(content, '  sudo enable-h4x - [CLASSIFIED]');
-                            addResponseLine(content, '  sudo l0ve-me    - [REDACTED] <3');
-                            addResponseLine(content, '  sudo emo-me0w   - [EMOTIONAL DAMAGE] 😭💔');
-                            addResponseLine(content, '  sudo go-home    - [RETURN TO 127.0.0.1]');
-                            addResponseLine(content, '[System] Warning: Use of unauthorized commands may have unexpected consequences.');
-                        } else if (command.toLowerCase() === 'sudo goto-repo') {
-                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
-                            addResponseLine(content, '<div class="loading-animation">Establishing connection to GitHub<span>.</span><span>.</span><span>.</span></div>');
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                            addResponseLine(content, '[System] Repository found: NeonOracle');
-                            await new Promise(resolve => setTimeout(resolve, 500));
-                            addResponseLine(content, '[System] Initiating redirect sequence...');
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                            window.location.href = 'https://github.com/Saganaki22/NeonOracle';
-                        } else if (command.toLowerCase() === 'sudo enable-h4x') {
-                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
-                            addResponseLine(content, '<div class="loading-animation">Initiating h4x sequence<span>.</span><span>.</span><span>.</span></div>');
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                            await displayHackingSequence(content);
-                            addResponseLine(content, '[System] Reality breach complete. Redirecting to source...');
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                            window.location.href = 'https://www.youtube.com/watch?v=qbWqXKN3m3c';
-                        } else if (command.toLowerCase() === 'sudo l0ve-me') {
-                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
-                            addResponseLine(content, '<div style="color: #ff69b4">♥ ♥ ♥ Hope you love me longtime mr. wonton! ♥ ♥ ♥</div>');
-                            await new Promise(resolve => setTimeout(resolve, 1500));
-                            window.location.href = 'https://www.youtube.com/watch?v=tb4ozEOZh8U';
-                        } else if (command.toLowerCase() === 'sudo emo-me0w') {
-                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
-                            addResponseLine(content, '[System] 😭💔 *sad meow* 😭💔');
-                            await new Promise(resolve => setTimeout(resolve, 1500));
-                            window.location.href = 'https://www.youtube.com/watch?v=AtPrjYp75uA';
-                        } else if (command.toLowerCase() === 'sudo go-home') {
-                            const content = terminalInput.parentNode.parentNode.querySelector('.terminal-content');
-                            addResponseLine(content, '[System] Redirecting to localhost (127.0.0.1)...');
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                            addResponseLine(content, '[System] There\'s no place like ~/home');
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                            window.location.href = 'https://drbaph.dev';
-                        } else if (command.toLowerCase() === 'clear') {
-                            terminalInput.parentNode.parentNode.querySelector('.terminal-content').innerHTML = '';
-                        } else if (command.toLowerCase() === 'reconnect') {
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Operating in local-only mode. External connections disabled.');
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), '[System] Using stored quotes from local repository.');
-                        } else if (command.trim() !== '') {
-                            addResponseLine(terminalInput.parentNode.parentNode.querySelector('.terminal-content'), `Command not found: ${command}`);
-                        }
-                    }
-                });
-                terminalInput.addEventListener('touchstart', () => {
-                    terminalInput.focus();
-                });
-            };
-            
-            const initTerminal = async (terminalContent, terminalId) => {
-                if (!localStorage.getItem(`terminal_${terminalId}_quoteCount`)) {
-                    localStorage.setItem(`terminal_${terminalId}_quoteCount`, '0');
-                }
-                addAsciiArt(terminalContent, `
-                    ███╗   ██╗███████╗ ██████╗ ███╗   ██╗
-                    ████╗  ██║██╔════╝██╔═══██╗████╗  ██║
-                    ██╔██╗ ██║█████╗  ██║   ██║██╔██╗ ██║
-                    ██║╚██╗██║██╔══╝  ██║   ██║██║╚██╗██║
-                    ██║ ╚████║███████╗╚██████╔╝██║ ╚████║
-                    ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
-                 ██████╗ ██████╗  █████╗  ██████╗██╗     ███████╗
-                ██╔═══██╗██╔══██╗██╔══██╗██╔════╝██║     ██╔════╝
-                ██║   ██║██████╔╝███████║██║     ██║     █████╗
-                ██║   ██║██╔══██╗██╔══██║██║     ██║     ██╔══╝
-                ╚██████╔╝██║  ██║██║  ██║╚██████╗███████╗███████╗
-                 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝
-       
-
-    =====================================================================
-    ====  ===========  ===================  ============  ===============
-    ====  ===========  ===================  ============  ===============
-    ====  ===========  ===================  ============  ===============
-    ====  ==  =   ===  ======   ===    ===  ============  ===   ===  =  =
-    ==    ==    =  ==    ===  =  ==  =  ==    ========    ==  =  ==  =  =
-    =  =  ==  =======  =  =====  ==  =  ==  =  ======  =  ==     ===   ==
-    =  =  ==  =======  =  ===    ==    ===  =  ======  =  ==  ======   ==
-    =  =  ==  =======  =  ==  =  ==  =====  =  ==  ==  =  ==  =  ==== ===
-    ==    ==  =======    ====    ==  =====  =  ==  ===    ===   ===== ===
-    =====================================================================
-            `);
-                addResponseLine(terminalContent, '[System] Initializing Neon Oracle v2.0...');
-                addResponseLine(terminalContent, '[System] Establishing connection to wisdom repository...');
-                try {
-                    const loaded = await loadQuotes();
-                    if (loaded) {
-                        addResponseLine(terminalContent, '[System] Successfully connected to wisdom repository.');
-                        addResponseLine(terminalContent, `[System] ${Object.keys(quotesData.categories).length} categories of wisdom available.`);
-                        await fetchNewQuote(terminalContent, terminalId);
+            draw() {
+                // Clear canvas
+                this.ctx.fillStyle = '#000';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw snake
+                this.ctx.fillStyle = '#00ff41';
+                this.snake.forEach((segment, index) => {
+                    if (index === 0) {
+                        // Head is brighter
+                        this.ctx.fillStyle = '#00ff41';
                     } else {
-                        addResponseLine(terminalContent, '[System] Using fallback quotes due to connection failure.');
-                        await fetchNewQuote(terminalContent, terminalId);
+                        this.ctx.fillStyle = '#008f11';
                     }
-                } catch (error) {
-                    console.error('Error initializing quotes:', error);
-                    addResponseLine(terminalContent, '[System] ERROR: Failed to connect to wisdom repository.');
-                    addResponseLine(terminalContent, '[System] Using fallback quotes. Type "reconnect" to retry.');
-                    await fetchNewQuote(terminalContent, terminalId); // Proceed with fallback
-                }
-            };
+                    this.ctx.fillRect(segment.x + 1, segment.y + 1, this.gridSize - 2, this.gridSize - 2);
+                    this.ctx.fillStyle = '#00ff41';
+                });
+                
+                // Draw food
+                this.ctx.fillStyle = '#ff0080';
+                this.ctx.fillRect(this.food.x + 1, this.food.y + 1, this.gridSize - 2, this.gridSize - 2);
+                
+                // Draw score and instructions
+                this.ctx.fillStyle = '#fff';
+                this.ctx.font = '16px Fira Code';
+                this.ctx.fillText(`Score: ${this.score}`, 10, 30);
+                this.ctx.fillText('Use WASD or arrow keys', 10, 50);
+                this.ctx.fillText('Press ESC to exit', 10, 70);
+            }
             
-            window.retryConnection = async () => {
-                try {
-                    console.log("Would attempt to reconnect to API, but operating in local-only mode");
-                    document.querySelectorAll('.terminal-container').forEach(terminal => {
-                        const terminalContent = terminal.querySelector('.terminal-content');
-                        if (terminalContent) {
-                            addResponseLine(terminalContent, '[System] Operating in local-only mode. External connections disabled.');
+            gameOver() {
+                this.gameRunning = false;
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = '#ff0080';
+                this.ctx.font = '24px Fira Code';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('Game Over!', this.canvas.width / 2, this.canvas.height / 2 - 20);
+                this.ctx.fillText(`Final Score: ${this.score}`, this.canvas.width / 2, this.canvas.height / 2 + 10);
+                this.ctx.fillText('Press ESC to close', this.canvas.width / 2, this.canvas.height / 2 + 40);
+                this.ctx.textAlign = 'left';
+            }
+            
+            stop() {
+                this.gameRunning = false;
+                document.removeEventListener('keydown', this.keyHandler);
+            }
+        }
+
+        // Tetris Game Class - FIXED AND IMPROVED
+        class TetrisGame {
+            constructor(ctx, canvas) {
+                this.ctx = ctx;
+                this.canvas = canvas;
+                this.gridSize = 20;
+                this.cols = Math.floor(this.canvas.width / this.gridSize);
+                this.rows = Math.floor(this.canvas.height / this.gridSize);
+                this.board = Array(this.rows).fill().map(() => Array(this.cols).fill(0));
+                this.currentPiece = this.generatePiece();
+                this.score = 0;
+                this.lines = 0;
+                this.level = 1;
+                this.gameRunning = true;
+                this.lastTime = 0;
+                this.dropTime = 0;
+                this.dropInterval = 1000;
+                
+                console.log('Tetris game initialized');
+                this.bindEvents();
+                
+                // Start the game loop
+                requestAnimationFrame((time) => this.gameLoop(time));
+            }
+            
+            generatePiece() {
+                const pieces = [
+                    { shape: [[1, 1, 1, 1]], color: '#00ffff' }, // I
+                    { shape: [[1, 1], [1, 1]], color: '#ffff00' }, // O
+                    { shape: [[0, 1, 0], [1, 1, 1]], color: '#800080' }, // T
+                    { shape: [[1, 0, 0], [1, 1, 1]], color: '#ffa500' }, // L
+                    { shape: [[0, 0, 1], [1, 1, 1]], color: '#0000ff' }, // J
+                    { shape: [[0, 1, 1], [1, 1, 0]], color: '#00ff00' }, // S
+                    { shape: [[1, 1, 0], [0, 1, 1]], color: '#ff0000' }  // Z
+                ];
+                
+                const pieceData = pieces[Math.floor(Math.random() * pieces.length)];
+                return {
+                    shape: pieceData.shape,
+                    color: pieceData.color,
+                    x: Math.floor(this.cols / 2) - Math.floor(pieceData.shape[0].length / 2),
+                    y: 0
+                };
+            }
+            
+            bindEvents() {
+                this.keyHandler = (e) => {
+                    if (!this.gameRunning) return;
+                    
+                    e.preventDefault();
+                    switch (e.key) {
+                        case 'ArrowLeft':
+                        case 'a':
+                        case 'A':
+                            this.movePiece(-1, 0);
+                            break;
+                        case 'ArrowRight':
+                        case 'd':
+                        case 'D':
+                            this.movePiece(1, 0);
+                            break;
+                        case 'ArrowDown':
+                        case 's':
+                        case 'S':
+                            this.movePiece(0, 1);
+                            break;
+                        case 'ArrowUp':
+                        case 'w':
+                        case 'W':
+                        case ' ':
+                            this.rotatePiece();
+                            break;
+                    }
+                };
+                document.addEventListener('keydown', this.keyHandler);
+            }
+            
+            movePiece(dx, dy) {
+                const newX = this.currentPiece.x + dx;
+                const newY = this.currentPiece.y + dy;
+                
+                if (this.isValidPosition(this.currentPiece.shape, newX, newY)) {
+                    this.currentPiece.x = newX;
+                    this.currentPiece.y = newY;
+                    return true;
+                }
+                return false;
+            }
+            
+            rotatePiece() {
+                const rotated = this.currentPiece.shape[0].map((_, index) =>
+                    this.currentPiece.shape.map(row => row[index]).reverse()
+                );
+                
+                if (this.isValidPosition(rotated, this.currentPiece.x, this.currentPiece.y)) {
+                    this.currentPiece.shape = rotated;
+                }
+            }
+            
+            isValidPosition(shape, x, y) {
+                for (let row = 0; row < shape.length; row++) {
+                    for (let col = 0; col < shape[row].length; col++) {
+                        if (shape[row][col]) {
+                            const newX = x + col;
+                            const newY = y + row;
+                            
+                            if (newX < 0 || newX >= this.cols || newY >= this.rows || 
+                                (newY >= 0 && this.board[newY][newX])) {
+                                return false;
+                            }
                         }
-                    });
-                    return false;
-                } catch (error) {
-                    console.log("%cCannot connect: running in local mode", "color: #ff3030; font-weight: bold;");
-                    return false;
+                    }
                 }
-            };
+                return true;
+            }
             
-            newTerminalBtn.addEventListener('click', createTerminal);
-            loadQuotes();
-            createTerminal();
+            gameLoop(currentTime) {
+                if (!this.gameRunning) return;
+                
+                const deltaTime = currentTime - this.lastTime;
+                this.lastTime = currentTime;
+                this.dropTime += deltaTime;
+                
+                if (this.dropTime > this.dropInterval) {
+                    if (!this.movePiece(0, 1)) {
+                        this.placePiece();
+                        this.clearLines();
+                        this.currentPiece = this.generatePiece();
+                        
+                        if (!this.isValidPosition(this.currentPiece.shape, this.currentPiece.x, this.currentPiece.y)) {
+                            this.gameOver();
+                        }
+                    }
+                    this.dropTime = 0;
+                }
+                
+                this.draw();
+                requestAnimationFrame((time) => this.gameLoop(time));
+            }
+            
+            placePiece() {
+                for (let row = 0; row < this.currentPiece.shape.length; row++) {
+                    for (let col = 0; col < this.currentPiece.shape[row].length; col++) {
+                        if (this.currentPiece.shape[row][col]) {
+                            const x = this.currentPiece.x + col;
+                            const y = this.currentPiece.y + row;
+                            if (y >= 0) {
+                                this.board[y][x] = this.currentPiece.color;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            clearLines() {
+                let linesCleared = 0;
+                for (let row = this.rows - 1; row >= 0; row--) {
+                    if (this.board[row].every(cell => cell !== 0)) {
+                        this.board.splice(row, 1);
+                        this.board.unshift(Array(this.cols).fill(0));
+                        linesCleared++;
+                        row++; // Check the same row again
+                    }
+                }
+                
+                if (linesCleared > 0) {
+                    this.lines += linesCleared;
+                    this.score += linesCleared * 100 * this.level;
+                    this.level = Math.floor(this.lines / 10) + 1;
+                    this.dropInterval = Math.max(100, 1000 - (this.level - 1) * 50);
+                }
+            }
+            
+            draw() {
+                // Clear canvas
+                this.ctx.fillStyle = '#000';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw board
+                for (let row = 0; row < this.rows; row++) {
+                    for (let col = 0; col < this.cols; col++) {
+                        if (this.board[row][col]) {
+                            this.ctx.fillStyle = this.board[row][col];
+                            this.ctx.fillRect(col * this.gridSize + 1, row * this.gridSize + 1, 
+                                            this.gridSize - 2, this.gridSize - 2);
+                        }
+                    }
+                }
+                
+                // Draw current piece
+                this.ctx.fillStyle = this.currentPiece.color;
+                for (let row = 0; row < this.currentPiece.shape.length; row++) {
+                    for (let col = 0; col < this.currentPiece.shape[row].length; col++) {
+                        if (this.currentPiece.shape[row][col]) {
+                            const x = (this.currentPiece.x + col) * this.gridSize;
+                            const y = (this.currentPiece.y + row) * this.gridSize;
+                            this.ctx.fillRect(x + 1, y + 1, this.gridSize - 2, this.gridSize - 2);
+                        }
+                    }
+                }
+                
+                // Draw grid lines
+                this.ctx.strokeStyle = '#333';
+                this.ctx.lineWidth = 1;
+                for (let i = 0; i <= this.cols; i++) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(i * this.gridSize, 0);
+                    this.ctx.lineTo(i * this.gridSize, this.canvas.height);
+                    this.ctx.stroke();
+                }
+                for (let i = 0; i <= this.rows; i++) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, i * this.gridSize);
+                    this.ctx.lineTo(this.canvas.width, i * this.gridSize);
+                    this.ctx.stroke();
+                }
+                
+                // Draw UI
+                this.ctx.fillStyle = '#fff';
+                this.ctx.font = '14px Fira Code';
+                this.ctx.fillText(`Score: ${this.score}`, 10, 25);
+                this.ctx.fillText(`Lines: ${this.lines}`, 10, 45);
+                this.ctx.fillText(`Level: ${this.level}`, 10, 65);
+                this.ctx.fillText('WASD/Arrows: Move', 10, this.canvas.height - 60);
+                this.ctx.fillText('W/Up/Space: Rotate', 10, this.canvas.height - 40);
+                this.ctx.fillText('ESC: Exit', 10, this.canvas.height - 20);
+            }
+            
+            gameOver() {
+                this.gameRunning = false;
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = '#ff0080';
+                this.ctx.font = '24px Fira Code';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('Game Over!', this.canvas.width / 2, this.canvas.height / 2 - 30);
+                this.ctx.fillText(`Score: ${this.score}`, this.canvas.width / 2, this.canvas.height / 2);
+                this.ctx.fillText(`Lines: ${this.lines}`, this.canvas.width / 2, this.canvas.height / 2 + 30);
+                this.ctx.fillText('Press ESC to close', this.canvas.width / 2, this.canvas.height / 2 + 60);
+                this.ctx.textAlign = 'left';
+            }
+            
+            stop() {
+                this.gameRunning = false;
+                document.removeEventListener('keydown', this.keyHandler);
+            }
+        }
+
+        // Pong Game Class - FIXED AND IMPROVED
+        class PongGame {
+            constructor(ctx, canvas) {
+                this.ctx = ctx;
+                this.canvas = canvas;
+                this.paddle1 = { x: 10, y: canvas.height / 2 - 50, width: 10, height: 100, speed: 6 };
+                this.paddle2 = { x: canvas.width - 20, y: canvas.height / 2 - 50, width: 10, height: 100, speed: 6 };
+                this.ball = { 
+                    x: canvas.width / 2, 
+                    y: canvas.height / 2, 
+                    dx: 4 * (Math.random() > 0.5 ? 1 : -1), 
+                    dy: 4 * (Math.random() > 0.5 ? 1 : -1), 
+                    radius: 8,
+                    speed: 4
+                };
+                this.score = { player1: 0, player2: 0 };
+                this.gameRunning = true;
+                this.keys = {};
+                this.lastTime = 0;
+                
+                console.log('Pong game initialized');
+                this.bindEvents();
+                
+                // Start the game loop
+                requestAnimationFrame((time) => this.gameLoop(time));
+            }
+            
+            bindEvents() {
+                this.keyDownHandler = (e) => {
+                    this.keys[e.key.toLowerCase()] = true;
+                    e.preventDefault();
+                };
+                this.keyUpHandler = (e) => {
+                    this.keys[e.key.toLowerCase()] = false;
+                    e.preventDefault();
+                };
+                
+                document.addEventListener('keydown', this.keyDownHandler);
+                document.addEventListener('keyup', this.keyUpHandler);
+            }
+            
+            gameLoop(currentTime) {
+                if (!this.gameRunning) return;
+                
+                const deltaTime = currentTime - this.lastTime;
+                this.lastTime = currentTime;
+                
+                this.update();
+                this.draw();
+                
+                requestAnimationFrame((time) => this.gameLoop(time));
+            }
+            
+            update() {
+                // Move paddles
+                if ((this.keys['arrowup'] || this.keys['w']) && this.paddle2.y > 0) {
+                    this.paddle2.y -= this.paddle2.speed;
+                }
+                if ((this.keys['arrowdown'] || this.keys['s']) && this.paddle2.y < this.canvas.height - this.paddle2.height) {
+                    this.paddle2.y += this.paddle2.speed;
+                }
+                
+                // Simple AI for left paddle
+                const paddleCenter = this.paddle1.y + this.paddle1.height / 2;
+                if (paddleCenter < this.ball.y - 35) {
+                    this.paddle1.y += this.paddle1.speed * 0.7;
+                } else if (paddleCenter > this.ball.y + 35) {
+                    this.paddle1.y -= this.paddle1.speed * 0.7;
+                }
+                
+                // Keep paddles in bounds
+                this.paddle1.y = Math.max(0, Math.min(this.canvas.height - this.paddle1.height, this.paddle1.y));
+                this.paddle2.y = Math.max(0, Math.min(this.canvas.height - this.paddle2.height, this.paddle2.y));
+                
+                // Move ball
+                this.ball.x += this.ball.dx;
+                this.ball.y += this.ball.dy;
+                
+                // Ball collision with top/bottom
+                if (this.ball.y <= this.ball.radius || this.ball.y >= this.canvas.height - this.ball.radius) {
+                    this.ball.dy = -this.ball.dy;
+                }
+                
+                // Ball collision with paddles
+                if (this.ball.x - this.ball.radius <= this.paddle1.x + this.paddle1.width && 
+                    this.ball.y >= this.paddle1.y - this.ball.radius && 
+                    this.ball.y <= this.paddle1.y + this.paddle1.height + this.ball.radius &&
+                    this.ball.dx < 0) {
+                    this.ball.dx = -this.ball.dx;
+                    this.ball.x = this.paddle1.x + this.paddle1.width + this.ball.radius;
+                    
+                    // Add some angle based on where ball hits paddle
+                    const hitPos = (this.ball.y - (this.paddle1.y + this.paddle1.height / 2)) / (this.paddle1.height / 2);
+                    this.ball.dy = hitPos * this.ball.speed;
+                }
+                
+                if (this.ball.x + this.ball.radius >= this.paddle2.x && 
+                    this.ball.y >= this.paddle2.y - this.ball.radius && 
+                    this.ball.y <= this.paddle2.y + this.paddle2.height + this.ball.radius &&
+                    this.ball.dx > 0) {
+                    this.ball.dx = -this.ball.dx;
+                    this.ball.x = this.paddle2.x - this.ball.radius;
+                    
+                    // Add some angle based on where ball hits paddle
+                    const hitPos = (this.ball.y - (this.paddle2.y + this.paddle2.height / 2)) / (this.paddle2.height / 2);
+                    this.ball.dy = hitPos * this.ball.speed;
+                }
+                
+                // Score
+                if (this.ball.x < 0) {
+                    this.score.player2++;
+                    this.resetBall();
+                }
+                if (this.ball.x > this.canvas.width) {
+                    this.score.player1++;
+                    this.resetBall();
+                }
+                
+                // Check win condition
+                if (this.score.player1 >= 5 || this.score.player2 >= 5) {
+                    this.gameOver();
+                }
+            }
+            
+            resetBall() {
+                this.ball.x = this.canvas.width / 2;
+                this.ball.y = this.canvas.height / 2;
+                this.ball.dx = this.ball.speed * (Math.random() > 0.5 ? 1 : -1);
+                this.ball.dy = this.ball.speed * (Math.random() > 0.5 ? 1 : -1);
+            }
+            
+            draw() {
+                // Clear canvas
+                this.ctx.fillStyle = '#000';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw center line
+                this.ctx.setLineDash([5, 15]);
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.canvas.width / 2, 0);
+                this.ctx.lineTo(this.canvas.width / 2, this.canvas.height);
+                this.ctx.strokeStyle = '#333';
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+                
+                // Draw paddles
+                this.ctx.fillStyle = '#00ff41';
+                this.ctx.fillRect(this.paddle1.x, this.paddle1.y, this.paddle1.width, this.paddle1.height);
+                this.ctx.fillRect(this.paddle2.x, this.paddle2.y, this.paddle2.width, this.paddle2.height);
+                
+                // Draw ball
+                this.ctx.fillStyle = '#ff0080';
+                this.ctx.beginPath();
+                this.ctx.arc(this.ball.x, this.ball.y, this.ball.radius, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                // Draw score
+                this.ctx.fillStyle = '#fff';
+                this.ctx.font = '32px Fira Code';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText(this.score.player1, this.canvas.width / 4, 60);
+                this.ctx.fillText(this.score.player2, 3 * this.canvas.width / 4, 60);
+                
+                // Draw instructions
+                this.ctx.font = '12px Fira Code';
+                this.ctx.fillText('CPU vs Player', this.canvas.width / 2, this.canvas.height - 60);
+                this.ctx.fillText('Player: W/S or ↑/↓', this.canvas.width / 2, this.canvas.height - 40);
+                this.ctx.fillText('First to 5 wins! Press ESC to exit', this.canvas.width / 2, this.canvas.height - 20);
+                this.ctx.textAlign = 'left';
+            }
+            
+            gameOver() {
+                this.gameRunning = false;
+                const winner = this.score.player1 >= 5 ? 'CPU' : 'Player';
+                
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = '#ff0080';
+                this.ctx.font = '24px Fira Code';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText(`${winner} Wins!`, this.canvas.width / 2, this.canvas.height / 2 - 20);
+                this.ctx.fillText(`Final Score: ${this.score.player1} - ${this.score.player2}`, this.canvas.width / 2, this.canvas.height / 2 + 10);
+                this.ctx.fillText('Press ESC to close', this.canvas.width / 2, this.canvas.height / 2 + 40);
+                this.ctx.textAlign = 'left';
+            }
+            
+            stop() {
+                this.gameRunning = false;
+                document.removeEventListener('keydown', this.keyDownHandler);
+                document.removeEventListener('keyup', this.keyUpHandler);
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new NeonOracle();
         });
     </script>
 </body>
